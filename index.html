@@ -1,41 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>USPPO.com | Sparrows Point Maritime & Logistics Gateway</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>USPPO.com | Sparrows Point & Baltimore Harbor Maritime Information</title>
 
 <meta name="description"
-content="USPPO.com is an independent maritime, port and logistics information gateway for Sparrows Point, Maryland and the greater Port of Baltimore region.">
+content="Free maritime and port information for Sparrows Point, Maryland and Baltimore Harbor including weather, tides, water levels, vessel resources, marine safety information, maps and port resources.">
 
-<meta name="keywords"
-content="USPPO, Sparrows Point, Port of Baltimore, Baltimore port, maritime, shipping, logistics, vessels, tides, weather, trucking, drayage, warehousing">
+<meta name="robots"
+content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 
-<meta name="robots" content="index,follow">
-
-<meta name="theme-color" content="#061824">
+<meta name="theme-color" content="#04131e">
 
 <link rel="canonical" href="https://usppo.com/">
 
-<meta property="og:title"
-content="USPPO.com | Sparrows Point Maritime & Logistics Gateway">
-
-<meta property="og:description"
-content="Live weather, tides, maritime resources, vessel information and logistics resources for Sparrows Point and the Baltimore port region.">
+<!-- SOCIAL SHARING -->
 
 <meta property="og:type" content="website">
-
+<meta property="og:site_name" content="USPPO.com">
+<meta property="og:title"
+content="USPPO.com | Sparrows Point & Baltimore Harbor">
+<meta property="og:description"
+content="Free maritime, weather, tide, vessel, safety and port information for Sparrows Point and Baltimore Harbor.">
 <meta property="og:url" content="https://usppo.com/">
+<meta property="og:image"
+content="https://usppo.com/images/usppo-share.jpg">
+<meta property="og:locale" content="en_US">
 
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title"
+content="USPPO.com | Sparrows Point & Baltimore Harbor">
+<meta name="twitter:description"
+content="Free maritime and port information for Sparrows Point and Baltimore Harbor.">
+<meta name="twitter:image"
+content="https://usppo.com/images/usppo-share.jpg">
 
-<!-- FONT AWESOME -->
+<!-- FAVICON -->
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<!-- STRUCTURED DATA -->
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"WebSite",
+ "name":"USPPO.com",
+ "url":"https://usppo.com/",
+ "description":"Independent maritime and port information platform for Sparrows Point, Maryland and the greater Baltimore Harbor region.",
+ "inLanguage":"en-US"
+}
+</script>
+
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@type":"Organization",
+ "name":"USPPO.com",
+ "url":"https://usppo.com/",
+ "description":"Independent informational website providing free maritime and port information for Sparrows Point and Baltimore Harbor."
+}
+</script>
+
+<!-- ICONS -->
+
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-
 <!-- LEAFLET MAP -->
+
 <link rel="stylesheet"
 href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
@@ -43,1109 +80,901 @@ href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
 </script>
 
-
 <style>
 
 :root{
-    --navy:#061824;
-    --navy2:#092638;
-    --navy3:#10364d;
-    --navy4:#164b67;
-    --steel:#7992a3;
-    --cyan:#61d4f2;
-    --blue:#2586ba;
-    --amber:#f6ae2d;
-    --orange:#f28c28;
-    --green:#32c48d;
-    --red:#ef6461;
-    --white:#f8fbfd;
-    --border:rgba(132,163,181,.22);
+--navy:#04131e;
+--navy2:#071f2e;
+--navy3:#0b2b3e;
+--cyan:#63d8f3;
+--blue:#2588bb;
+--gold:#f5b642;
+--green:#38cb94;
+--white:#f7fbfd;
+--muted:#91a7b4;
+--border:rgba(137,170,190,.20);
 }
 
-*{
-    box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
-html{
-    scroll-behavior:smooth;
-}
+html{scroll-behavior:smooth}
 
 body{
-    margin:0;
-    font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Arial,
-    sans-serif;
-
-    background:
-    radial-gradient(circle at 85% 5%,
-    rgba(37,134,186,.19),
-    transparent 28%),
-
-    linear-gradient(
-    180deg,
-    #04121c 0%,
-    #071c2a 34%,
-    #092131 65%,
-    #04121c 100%);
-
-    color:#e8f0f5;
+margin:0;
+font-family:Inter,-apple-system,BlinkMacSystemFont,
+"Segoe UI",Arial,sans-serif;
+background:
+radial-gradient(circle at 85% 0%,
+rgba(37,136,187,.18),transparent 28%),
+linear-gradient(180deg,#031019 0%,#071d2a 45%,#04131e 100%);
+color:#e7f0f5;
 }
 
 a{
-    color:inherit;
-    text-decoration:none;
+color:inherit;
+text-decoration:none;
 }
 
-button,
-input,
-select{
-    font:inherit;
-}
+button,input,select{font:inherit}
+button{cursor:pointer}
 
-button{
-    cursor:pointer;
-}
-
-button:focus-visible,
 a:focus-visible,
+button:focus-visible,
 input:focus-visible,
 select:focus-visible{
-    outline:3px solid var(--amber);
-    outline-offset:3px;
+outline:3px solid var(--gold);
+outline-offset:3px;
 }
 
 .container{
-    width:min(1240px,calc(100% - 32px));
-    margin:auto;
+width:min(1240px,calc(100% - 32px));
+margin:auto;
 }
+
+.section{padding:68px 0}
 
 .glass{
-    background:rgba(10,37,55,.86);
-    border:1px solid var(--border);
-    box-shadow:0 15px 40px rgba(0,0,0,.23);
-    backdrop-filter:blur(10px);
+background:rgba(9,36,53,.88);
+border:1px solid var(--border);
+box-shadow:0 15px 40px rgba(0,0,0,.22);
+backdrop-filter:blur(10px);
 }
 
-.card{
-    border-radius:18px;
-}
+.card{border-radius:18px}
 
-.section{
-    padding:68px 0;
-}
-
-.section-title-small{
-    color:var(--amber);
-    font-weight:800;
-    font-size:11px;
-    letter-spacing:.18em;
-    text-transform:uppercase;
+.eyebrow{
+color:var(--gold);
+font-size:11px;
+font-weight:900;
+letter-spacing:.18em;
+text-transform:uppercase;
 }
 
 .section-title{
-    margin:8px 0 0;
-    font-size:32px;
-    line-height:1.15;
-    color:white;
+color:white;
+margin:8px 0 0;
+font-size:32px;
+line-height:1.15;
 }
 
-.section-description{
-    color:#9db0bd;
-    max-width:760px;
-    font-size:14px;
-    line-height:1.7;
+.section-copy{
+max-width:790px;
+color:#98adba;
+font-size:14px;
+line-height:1.75;
 }
 
-.top-disclaimer{
-    background:#020c13;
-    color:#879ca9;
-    border-bottom:1px solid rgba(255,255,255,.06);
-    text-align:center;
-    font-size:10px;
-    padding:7px 14px;
+.top-notice{
+background:#020b11;
+color:#8298a6;
+border-bottom:1px solid rgba(255,255,255,.06);
+text-align:center;
+font-size:10px;
+padding:7px 14px;
 }
-
 
 /* HEADER */
 
 header{
-    position:sticky;
-    top:0;
-    z-index:1000;
-    background:rgba(5,23,35,.96);
-    backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--border);
-    box-shadow:0 5px 25px rgba(0,0,0,.25);
+position:sticky;
+top:0;
+z-index:1000;
+background:rgba(4,19,30,.96);
+backdrop-filter:blur(12px);
+border-bottom:1px solid var(--border);
 }
 
-.nav-wrap{
-    min-height:72px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:24px;
+.navbar{
+min-height:72px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:25px;
 }
 
 .brand{
-    display:flex;
-    align-items:center;
-    gap:12px;
+display:flex;
+align-items:center;
+gap:12px;
 }
 
-.logo-circle{
-    width:46px;
-    height:46px;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:rgba(97,212,242,.08);
-    border:1px solid rgba(97,212,242,.28);
-}
-
-.logo-circle i{
-    color:var(--amber);
-    font-size:21px;
+.logo{
+width:46px;
+height:46px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+border:1px solid rgba(99,216,243,.3);
+background:rgba(99,216,243,.07);
+color:var(--gold);
+font-size:21px;
 }
 
 .brand-name{
-    font-size:21px;
-    font-weight:900;
-    letter-spacing:.14em;
-    color:white;
+color:white;
+font-weight:950;
+letter-spacing:.13em;
+font-size:21px;
 }
 
-.brand-name span{
-    color:var(--amber);
-}
+.brand-name span{color:var(--gold)}
 
-.brand-subtitle{
-    color:#7892a3;
-    font-size:9px;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-    margin-top:2px;
+.brand-sub{
+color:#718b9a;
+text-transform:uppercase;
+letter-spacing:.13em;
+font-size:9px;
+margin-top:2px;
 }
 
 nav{
-    display:flex;
-    gap:23px;
-    align-items:center;
+display:flex;
+align-items:center;
+gap:23px;
 }
 
 nav a{
-    font-size:12px;
-    color:#b9c9d3;
-    font-weight:700;
+color:#b4c5cf;
+font-size:12px;
+font-weight:800;
 }
 
-nav a:hover{
-    color:var(--amber);
-}
+nav a:hover{color:var(--gold)}
 
-.header-button{
-    border:none;
-    background:var(--amber);
-    color:#071824;
-    font-size:12px;
-    font-weight:900;
-    padding:11px 17px;
-    border-radius:9px;
+.live-btn{
+background:var(--gold);
+color:#061824;
+border-radius:9px;
+padding:11px 16px;
+font-size:11px;
+font-weight:950;
 }
-
-.header-button:hover{
-    background:#ffc04c;
-}
-
 
 /* HERO */
 
 .hero{
-    position:relative;
-    overflow:hidden;
-    min-height:590px;
-    display:flex;
-    align-items:center;
-
-    background:
-
-    linear-gradient(
-    90deg,
-    rgba(2,15,24,.98) 0%,
-    rgba(4,32,49,.92) 50%,
-    rgba(7,46,67,.78) 100%),
-
-    radial-gradient(
-    circle at 80% 40%,
-    rgba(52,165,205,.3),
-    transparent 37%);
+min-height:590px;
+position:relative;
+overflow:hidden;
+display:flex;
+align-items:center;
+background:
+linear-gradient(90deg,
+rgba(2,14,22,.98),
+rgba(5,34,50,.91),
+rgba(8,54,75,.74)),
+radial-gradient(circle at 80% 40%,
+rgba(45,155,198,.32),transparent 40%);
 }
 
-.hero::before{
-    content:"";
-    position:absolute;
-    inset:0;
-
-    background-image:
-    linear-gradient(rgba(97,212,242,.035) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(97,212,242,.035) 1px,transparent 1px);
-
-    background-size:44px 44px;
-}
-
-.hero::after{
-    content:"";
-    position:absolute;
-    width:620px;
-    height:620px;
-    border:1px solid rgba(97,212,242,.09);
-    border-radius:50%;
-    right:-190px;
-    top:-260px;
-
-    box-shadow:
-    0 0 0 70px rgba(97,212,242,.025),
-    0 0 0 140px rgba(97,212,242,.018);
+.hero:before{
+content:"";
+position:absolute;
+inset:0;
+background-image:
+linear-gradient(rgba(99,216,243,.035) 1px,transparent 1px),
+linear-gradient(90deg,rgba(99,216,243,.035) 1px,transparent 1px);
+background-size:44px 44px;
 }
 
 .hero-content{
-    position:relative;
-    z-index:3;
-    padding:85px 0;
-    max-width:920px;
+position:relative;
+z-index:2;
+max-width:930px;
+padding:85px 0;
 }
 
-.hero-pill{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-
-    border:1px solid rgba(97,212,242,.3);
-    background:rgba(97,212,242,.07);
-
-    color:#b9eef9;
-    border-radius:50px;
-
-    font-size:10px;
-    font-weight:800;
-    letter-spacing:.13em;
-    text-transform:uppercase;
-
-    padding:8px 13px;
+.hero-tag{
+display:inline-flex;
+align-items:center;
+gap:8px;
+color:#c0eff8;
+background:rgba(99,216,243,.07);
+border:1px solid rgba(99,216,243,.28);
+border-radius:40px;
+padding:8px 13px;
+text-transform:uppercase;
+letter-spacing:.13em;
+font-size:10px;
+font-weight:900;
 }
 
-.hero-pill i{
-    color:var(--amber);
-}
+.hero-tag i{color:var(--gold)}
 
 .hero h1{
-    margin:23px 0 0;
-    color:white;
-    font-size:clamp(44px,6vw,75px);
-    line-height:1.02;
-    letter-spacing:-.035em;
+color:white;
+font-size:clamp(45px,6vw,76px);
+letter-spacing:-.04em;
+line-height:1.01;
+margin:24px 0 0;
 }
 
 .hero h1 span{
-    display:block;
-    background:linear-gradient(
-    90deg,
-    #86e7fa,
-    #42acd5);
-    -webkit-background-clip:text;
-    color:transparent;
+display:block;
+background:linear-gradient(90deg,#94e9f9,#42abd3);
+-webkit-background-clip:text;
+color:transparent;
 }
 
-.hero-copy{
-    max-width:780px;
-    color:#c0d0d9;
-    font-size:17px;
-    line-height:1.75;
-    margin-top:27px;
+.hero p{
+color:#c0d0d9;
+max-width:790px;
+font-size:17px;
+line-height:1.75;
+margin-top:27px;
 }
 
 .hero-buttons{
-    display:flex;
-    flex-wrap:wrap;
-    gap:12px;
-    margin-top:32px;
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+margin-top:32px;
 }
 
-.btn-primary,
-.btn-secondary{
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-
-    padding:13px 20px;
-    border-radius:10px;
-    font-weight:800;
-    font-size:13px;
+.primary,.secondary{
+display:inline-flex;
+align-items:center;
+gap:8px;
+border-radius:10px;
+padding:13px 20px;
+font-size:13px;
+font-weight:900;
 }
 
-.btn-primary{
-    background:var(--amber);
-    color:#061824;
+.primary{
+background:var(--gold);
+color:#061824;
 }
 
-.btn-primary:hover{
-    background:#ffc24e;
-}
-
-.btn-secondary{
-    border:1px solid rgba(160,190,208,.4);
-    background:rgba(4,21,32,.45);
-    color:white;
-}
-
-.btn-secondary:hover{
-    border-color:var(--cyan);
+.secondary{
+color:white;
+border:1px solid rgba(170,199,216,.4);
+background:rgba(4,20,31,.5);
 }
 
 .harbor-line{
-    height:3px;
-    background:linear-gradient(
-    90deg,
-    transparent,
-    #2586ba,
-    #61d4f2,
-    #f6ae2d,
-    transparent);
+height:3px;
+background:linear-gradient(
+90deg,transparent,#2588bb,#63d8f3,#f5b642,transparent);
 }
 
+/* DASHBOARD */
 
-/* NOW DASHBOARD */
-
-.now-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:14px;
-    margin-top:30px;
+.dashboard{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px;
+margin-top:30px;
 }
 
-.metric-card{
-    padding:20px;
-    min-height:142px;
+.metric{
+min-height:142px;
+padding:20px;
 }
 
-.metric-top{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+.metric-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
 }
 
 .metric-icon{
-    font-size:18px;
-    color:var(--cyan);
+color:var(--cyan);
+font-size:18px;
+}
+
+.source{
+color:#6ee1b5;
+font-size:9px;
+font-weight:900;
+letter-spacing:.08em;
+}
+
+.dot{
+display:inline-block;
+width:7px;
+height:7px;
+border-radius:50%;
+background:#36cc93;
+margin-right:4px;
 }
 
 .metric-label{
-    color:#7f98a8;
-    font-size:10px;
-    text-transform:uppercase;
-    letter-spacing:.12em;
-    font-weight:800;
-    margin-top:17px;
+margin-top:17px;
+color:#7e97a6;
+font-size:10px;
+font-weight:900;
+letter-spacing:.11em;
+text-transform:uppercase;
 }
 
 .metric-value{
-    color:white;
-    font-size:22px;
-    font-weight:900;
-    margin-top:7px;
+margin-top:7px;
+color:white;
+font-size:22px;
+font-weight:950;
 }
 
 .metric-note{
-    color:#718998;
-    font-size:10px;
-    margin-top:7px;
+margin-top:7px;
+color:#728b99;
+font-size:10px;
 }
 
-.live-label{
-    color:#74e1ba;
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:.08em;
+/* ALERTS */
+
+.alert-box{
+margin-top:15px;
+border-radius:15px;
+padding:19px;
+border:1px solid rgba(245,182,66,.22);
+background:rgba(245,182,66,.045);
 }
 
-.live-dot{
-    width:7px;
-    height:7px;
-    display:inline-block;
-    background:#2fcd91;
-    border-radius:50%;
-    margin-right:4px;
+.alert-heading{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
 }
 
-
-/* ALERT */
-
-.alert-panel{
-    margin-top:15px;
-    border:1px solid rgba(246,174,45,.23);
-    background:rgba(246,174,45,.045);
-    border-radius:15px;
-    padding:19px;
-}
-
-.alert-header{
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    align-items:center;
-}
-
-.alert-header h3{
-    margin:0;
-    font-size:14px;
-    color:white;
-}
-
-.alert-source{
-    color:#8096a4;
-    font-size:10px;
+.alert-heading h3{
+margin:0;
+color:white;
+font-size:14px;
 }
 
 .alert-list{
-    margin-top:14px;
-    display:grid;
-    gap:8px;
+display:grid;
+gap:8px;
+margin-top:14px;
 }
 
 .alert-item{
-    background:#061824;
-    border:1px solid rgba(255,255,255,.07);
-    padding:12px 14px;
-    border-radius:9px;
+background:#051722;
+border:1px solid rgba(255,255,255,.07);
+border-radius:9px;
+padding:12px 14px;
 }
 
 .alert-name{
-    font-weight:800;
-    color:#ffc864;
-    font-size:12px;
+color:#ffc85f;
+font-weight:900;
+font-size:12px;
 }
 
 .alert-detail{
-    color:#9cafba;
-    font-size:11px;
-    margin-top:5px;
+color:#9bb0bc;
+font-size:11px;
+line-height:1.55;
+margin-top:5px;
 }
 
+/* CARDS */
 
-/* RESOURCES */
-
-.resource-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:17px;
-    margin-top:28px;
+.grid-3{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:17px;
+margin-top:28px;
 }
 
-.resource-card{
-    padding:23px;
-    transition:.22s;
+.info-card{
+padding:23px;
+transition:.2s;
 }
 
-.resource-card:hover{
-    transform:translateY(-4px);
-    border-color:rgba(97,212,242,.44);
+.info-card:hover{
+transform:translateY(-4px);
+border-color:rgba(99,216,243,.42);
 }
 
-.resource-icon{
-    width:45px;
-    height:45px;
-    border-radius:11px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:rgba(97,212,242,.08);
-    color:var(--cyan);
-    border:1px solid rgba(97,212,242,.14);
-
-    font-size:18px;
+.icon-box{
+width:45px;
+height:45px;
+border-radius:11px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:rgba(99,216,243,.08);
+border:1px solid rgba(99,216,243,.14);
+color:var(--cyan);
+font-size:18px;
 }
 
-.resource-card h3{
-    margin:17px 0 7px;
-    color:white;
-    font-size:15px;
+.info-card h3{
+color:white;
+margin:17px 0 7px;
+font-size:15px;
 }
 
-.resource-card p{
-    color:#869dab;
-    font-size:12px;
-    line-height:1.6;
-    min-height:57px;
+.info-card p{
+color:#879eac;
+font-size:12px;
+line-height:1.65;
 }
 
 .resource-link{
-    color:var(--amber);
-    font-size:11px;
-    font-weight:900;
+color:var(--gold);
+font-size:11px;
+font-weight:950;
 }
 
+/* FEATURES */
+
+.feature-grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:14px;
+margin-top:28px;
+}
+
+.feature{padding:22px}
+
+.feature i{
+color:var(--gold);
+font-size:21px;
+}
+
+.feature h3{
+color:white;
+font-size:14px;
+margin:15px 0 7px;
+}
+
+.feature p{
+color:#8299a7;
+font-size:11px;
+line-height:1.6;
+}
 
 /* MAP */
 
 .map-layout{
-    display:grid;
-    grid-template-columns:2fr 1fr;
-    gap:18px;
-    margin-top:28px;
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:18px;
+margin-top:28px;
 }
 
 #portMap{
-    height:500px;
-    border-radius:17px;
-    overflow:hidden;
+height:500px;
+border-radius:17px;
+overflow:hidden;
 }
 
-.map-side{
-    padding:22px;
-}
+.map-side{padding:23px}
 
 .map-side h3{
-    margin:0;
-    color:white;
+margin:0;
+color:white;
 }
 
 .map-side p{
-    font-size:12px;
-    line-height:1.6;
-    color:#8ba1af;
+color:#8ca2af;
+font-size:12px;
+line-height:1.65;
 }
 
-.map-key{
-    display:grid;
-    gap:11px;
-    margin-top:20px;
+.map-list{
+display:grid;
+gap:10px;
+margin-top:19px;
 }
 
-.map-key-item{
-    padding:12px;
-    background:#061824;
-    border:1px solid rgba(255,255,255,.07);
-    border-radius:9px;
+.map-item{
+background:#051722;
+border:1px solid rgba(255,255,255,.07);
+border-radius:9px;
+padding:12px;
 }
 
-.map-key-name{
-    font-size:12px;
-    font-weight:800;
-    color:white;
+.map-item strong{
+display:block;
+color:white;
+font-size:12px;
 }
 
-.map-key-text{
-    font-size:10px;
-    color:#7f96a5;
-    margin-top:4px;
+.map-item span{
+display:block;
+color:#78909f;
+font-size:10px;
+margin-top:4px;
 }
-
-
-/* SERVICES */
-
-.service-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:16px;
-    margin-top:28px;
-}
-
-.service-card{
-    padding:23px;
-}
-
-.service-card i{
-    font-size:20px;
-    color:var(--amber);
-}
-
-.service-card h3{
-    font-size:14px;
-    color:white;
-    margin:15px 0 7px;
-}
-
-.service-card p{
-    font-size:11px;
-    line-height:1.6;
-    color:#839aa9;
-}
-
-.coming{
-    display:inline-block;
-    margin-top:12px;
-    color:#78a4bb;
-    font-size:9px;
-    text-transform:uppercase;
-    letter-spacing:.1em;
-}
-
 
 /* TOOLS */
 
-.tools-grid{
-    display:grid;
-    grid-template-columns:1.4fr 1fr;
-    gap:18px;
-    margin-top:28px;
+.tools{
+display:grid;
+grid-template-columns:1.35fr 1fr;
+gap:18px;
+margin-top:28px;
 }
 
-.tool-box{
-    padding:25px;
-}
+.tool{padding:25px}
 
-.tool-box h3{
-    margin:0;
-    color:white;
-    font-size:17px;
+.tool h3{
+margin:0;
+color:white;
+font-size:17px;
 }
 
 .form-row{
-    display:grid;
-    grid-template-columns:1fr 1fr auto;
-    gap:10px;
-    margin-top:19px;
+display:grid;
+grid-template-columns:1fr 1fr auto;
+gap:10px;
+margin-top:19px;
 }
 
-.form-control{
-    width:100%;
-    padding:12px 13px;
-    border-radius:8px;
-    border:1px solid #304c5e;
-    background:#051823;
-    color:white;
+.control{
+width:100%;
+padding:12px 13px;
+border-radius:8px;
+border:1px solid #304d5f;
+background:#041721;
+color:white;
 }
 
-.convert-btn{
-    background:var(--amber);
-    border:none;
-    color:#061824;
-    font-weight:900;
-    padding:0 18px;
-    border-radius:8px;
+.convert{
+border:0;
+border-radius:8px;
+padding:0 18px;
+background:var(--gold);
+color:#061824;
+font-weight:950;
 }
 
 .result{
-    min-height:24px;
-    color:var(--cyan);
-    font-weight:900;
-    margin-top:16px;
+min-height:24px;
+color:var(--cyan);
+font-weight:900;
+margin-top:16px;
 }
 
-.reference-list{
-    display:grid;
-    gap:9px;
-    margin-top:17px;
+.reference{
+margin-top:17px;
+display:grid;
+gap:9px;
 }
 
 .reference-row{
-    display:flex;
-    justify-content:space-between;
-    gap:12px;
-    border-bottom:1px solid rgba(255,255,255,.07);
-    padding-bottom:9px;
-    font-size:11px;
+display:flex;
+justify-content:space-between;
+gap:15px;
+padding-bottom:9px;
+border-bottom:1px solid rgba(255,255,255,.07);
+font-size:11px;
 }
 
-.reference-row span:first-child{
-    color:white;
-    font-weight:800;
-}
+.reference-row strong{color:white}
 
-.reference-row span:last-child{
-    color:#849baa;
-    text-align:right;
+.reference-row span{
+color:#839aa8;
+text-align:right;
 }
-
 
 /* GLOSSARY */
 
-.glossary-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:12px;
-    margin-top:27px;
-}
-
 .glossary{
-    padding:18px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-top:27px;
 }
 
-.glossary strong{
-    display:block;
-    color:white;
-    font-size:12px;
+.term{padding:18px}
+
+.term strong{
+display:block;
+color:white;
+font-size:12px;
 }
 
-.glossary span{
-    display:block;
-    color:#8299a8;
-    font-size:10px;
-    line-height:1.5;
-    margin-top:5px;
+.term span{
+display:block;
+color:#8198a7;
+font-size:10px;
+line-height:1.55;
+margin-top:5px;
 }
-
 
 /* SAFETY */
 
 .safety{
-    border:1px solid rgba(246,174,45,.23);
-    background:rgba(246,174,45,.045);
-    padding:29px;
+padding:29px;
+border:1px solid rgba(245,182,66,.22);
+background:rgba(245,182,66,.045);
 }
 
-.safety-flex{
-    display:flex;
-    gap:20px;
+.safety-wrap{
+display:flex;
+gap:20px;
 }
 
 .safety-icon{
-    font-size:30px;
-    color:var(--amber);
+color:var(--gold);
+font-size:30px;
 }
 
 .safety h2{
-    color:white;
-    margin:0;
-    font-size:20px;
+margin:0;
+color:white;
+font-size:20px;
 }
 
 .safety p{
-    color:#a8b8c1;
-    font-size:12px;
-    line-height:1.7;
+color:#a7b7c0;
+font-size:12px;
+line-height:1.75;
 }
-
 
 /* FOOTER */
 
 footer{
-    background:#020d14;
-    border-top:1px solid rgba(255,255,255,.08);
-    margin-top:50px;
+margin-top:45px;
+background:#020c13;
+border-top:1px solid rgba(255,255,255,.08);
 }
 
 .footer-grid{
-    display:grid;
-    grid-template-columns:1.5fr 1fr 1fr;
-    gap:40px;
-    padding:48px 0 35px;
+display:grid;
+grid-template-columns:1.5fr 1fr 1fr;
+gap:40px;
+padding:48px 0 35px;
 }
 
-.footer-title{
-    color:white;
-    font-weight:900;
-    font-size:17px;
-    letter-spacing:.1em;
+.footer-logo{
+color:white;
+font-weight:950;
+font-size:17px;
+letter-spacing:.1em;
 }
 
-.footer-title span{
-    color:var(--amber);
-}
+.footer-logo span{color:var(--gold)}
 
 .footer-copy{
-    color:#6f8796;
-    font-size:11px;
-    line-height:1.7;
-    margin-top:12px;
+margin-top:12px;
+color:#718896;
+font-size:11px;
+line-height:1.7;
 }
 
 .footer-heading{
-    color:white;
-    font-weight:800;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.1em;
+color:white;
+font-size:11px;
+font-weight:900;
+letter-spacing:.1em;
+text-transform:uppercase;
 }
 
 .footer-links{
-    display:grid;
-    gap:9px;
-    margin-top:14px;
+display:grid;
+gap:9px;
+margin-top:14px;
 }
 
-.footer-links button,
-.footer-links a{
-    border:none;
-    background:none;
-    padding:0;
-    color:#8096a4;
-    text-align:left;
-    font-size:11px;
+.footer-links a,
+.footer-links button{
+padding:0;
+border:0;
+background:none;
+color:#8197a5;
+text-align:left;
+font-size:11px;
 }
 
-.footer-links button:hover,
-.footer-links a:hover{
-    color:var(--amber);
+.footer-links a:hover,
+.footer-links button:hover{
+color:var(--gold);
 }
 
 .copyright{
-    border-top:1px solid rgba(255,255,255,.07);
-    padding:22px 0 31px;
-    color:#607783;
-    font-size:9px;
-    line-height:1.7;
+padding:22px 0 31px;
+border-top:1px solid rgba(255,255,255,.07);
+color:#607783;
+font-size:9px;
+line-height:1.75;
 }
-
 
 /* MODALS */
 
 .modal{
-    display:none;
-    position:fixed;
-    z-index:3000;
-    inset:0;
-    background:rgba(0,8,13,.91);
-    padding:25px;
-    overflow:auto;
+display:none;
+position:fixed;
+inset:0;
+z-index:3000;
+background:rgba(0,8,13,.92);
+padding:25px;
+overflow:auto;
 }
 
 .modal.open{
-    display:flex;
-    align-items:center;
-    justify-content:center;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 .modal-card{
-    position:relative;
-    width:min(780px,100%);
-    max-height:86vh;
-    overflow:auto;
-
-    padding:30px;
-
-    border-radius:18px;
-    background:#092638;
-    border:1px solid #29475a;
-
-    box-shadow:0 30px 70px rgba(0,0,0,.6);
+position:relative;
+width:min(780px,100%);
+max-height:86vh;
+overflow:auto;
+padding:30px;
+border-radius:18px;
+background:#092638;
+border:1px solid #29475a;
 }
 
 .modal-close{
-    position:absolute;
-    right:18px;
-    top:16px;
-
-    border:none;
-    background:none;
-    color:#90a3af;
-    font-size:20px;
+position:absolute;
+right:18px;
+top:16px;
+border:0;
+background:none;
+color:#90a3af;
+font-size:20px;
 }
 
 .modal-card h2{
-    margin:0 35px 20px 0;
-    color:white;
+color:white;
+margin:0 35px 20px 0;
+}
+
+.modal-card h3{
+color:white;
+font-size:14px;
+margin-top:24px;
 }
 
 .modal-card p,
 .modal-card li{
-    color:#a4b6c0;
-    font-size:12px;
-    line-height:1.7;
+color:#a4b6c0;
+font-size:12px;
+line-height:1.75;
 }
 
-.modal-card strong{
-    color:#e6eef3;
-}
-
-.modal-card h3{
-    color:white;
-    font-size:14px;
-    margin-top:24px;
-}
-
+.modal-card strong{color:#e9f0f4}
 
 /* RESPONSIVE */
 
-@media(max-width:960px){
+@media(max-width:980px){
 
-    nav{
-        display:none;
-    }
+nav{display:none}
 
-    .now-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
+.dashboard{
+grid-template-columns:repeat(2,1fr);
+}
 
-    .resource-grid,
-    .service-grid,
-    .glossary-grid{
-        grid-template-columns:repeat(2,1fr);
-    }
+.grid-3,
+.feature-grid,
+.glossary{
+grid-template-columns:repeat(2,1fr);
+}
 
-    .map-layout,
-    .tools-grid{
-        grid-template-columns:1fr;
-    }
+.map-layout,
+.tools{
+grid-template-columns:1fr;
+}
 
-    .footer-grid{
-        grid-template-columns:1fr 1fr;
-    }
-
+.footer-grid{
+grid-template-columns:1fr 1fr;
+}
 }
 
 @media(max-width:620px){
 
-    .container{
-        width:min(100% - 22px,1240px);
-    }
+.container{
+width:min(100% - 22px,1240px);
+}
 
-    .header-button{
-        font-size:10px;
-        padding:10px 11px;
-    }
+.brand-sub{display:none}
 
-    .brand-subtitle{
-        display:none;
-    }
+.live-btn{
+padding:10px;
+font-size:9px;
+}
 
-    .hero{
-        min-height:auto;
-    }
+.hero{min-height:auto}
 
-    .hero-content{
-        padding:65px 0;
-    }
+.hero-content{padding:65px 0}
 
-    .hero h1{
-        font-size:42px;
-    }
+.hero h1{font-size:42px}
 
-    .hero-copy{
-        font-size:15px;
-    }
+.hero p{font-size:15px}
 
-    .now-grid,
-    .resource-grid,
-    .service-grid,
-    .glossary-grid,
-    .footer-grid{
-        grid-template-columns:1fr;
-    }
+.dashboard,
+.grid-3,
+.feature-grid,
+.glossary,
+.footer-grid{
+grid-template-columns:1fr;
+}
 
-    .form-row{
-        grid-template-columns:1fr;
-    }
+.form-row{
+grid-template-columns:1fr;
+}
 
-    .convert-btn{
-        min-height:45px;
-    }
+.convert{min-height:45px}
 
-    #portMap{
-        height:380px;
-    }
+#portMap{height:380px}
 
-    .section{
-        padding:50px 0;
-    }
-
+.section{padding:50px 0}
 }
 
 @media(prefers-reduced-motion:reduce){
-
-    *{
-        scroll-behavior:auto!important;
-        transition:none!important;
-    }
-
+*{
+scroll-behavior:auto!important;
+transition:none!important;
+}
 }
 
 </style>
-
 </head>
-
 
 <body>
 
-
-<a href="#main"
-style="
-position:absolute;
-left:-9999px;
-top:auto;
-"
-onfocus="this.style.left='10px';this.style.top='10px';this.style.zIndex='5000';"
-onblur="this.style.left='-9999px';">
-Skip to main content
-</a>
-
-
-<!-- INDEPENDENCE NOTICE -->
-
-<div class="top-disclaimer">
-
-Independent informational website.
-USPPO.com is not a government agency, port authority,
-terminal operator or navigation service.
-
+<div class="top-notice">
+Independent informational website • Not a government agency, port authority, terminal operator or navigation service
 </div>
 
-
-<!-- HEADER -->
-
 <header>
+<div class="container navbar">
 
-<div class="container nav-wrap">
+<a class="brand" href="#top">
 
-<a href="#top" class="brand">
-
-<div class="logo-circle">
+<div class="logo">
 <i class="fa-solid fa-anchor"></i>
 </div>
 
 <div>
-
 <div class="brand-name">
 USPPO<span>.com</span>
 </div>
 
-<div class="brand-subtitle">
+<div class="brand-sub">
 Sparrows Point • Maryland • USA
 </div>
-
 </div>
 
 </a>
-
 
 <nav>
-
 <a href="#now">Port Now</a>
-
 <a href="#vessels">Vessels</a>
-
 <a href="#map">Map</a>
-
-<a href="#logistics">Logistics</a>
-
+<a href="#resources">Resources</a>
 <a href="#tools">Tools</a>
-
 <a href="#safety">Safety</a>
-
 </nav>
 
-
-<a class="header-button"
-href="#now">
-
+<a class="live-btn" href="#now">
 <i class="fa-solid fa-satellite-dish"></i>
-&nbsp;
-LIVE PORT INFO
-
+&nbsp; LIVE INFO
 </a>
 
 </div>
-
 </header>
-
-
-
-<!-- HERO -->
 
 <section id="top" class="hero">
 
@@ -1153,1536 +982,708 @@ LIVE PORT INFO
 
 <div class="hero-content">
 
-<div class="hero-pill">
-
+<div class="hero-tag">
 <i class="fa-solid fa-location-dot"></i>
-
-USPPO • Sparrows Point, Maryland
-
+Sparrows Point • Baltimore Harbor
 </div>
 
-
 <h1>
-
-Sparrows Point
-
-<span>
-Maritime & Logistics Gateway
-</span>
-
+Your Gateway to
+<span>Sparrows Point</span>
 </h1>
 
-
-<p class="hero-copy">
-
-A free independent information gateway bringing together
-weather, tides, marine safety resources, vessel information,
-port resources and logistics services for Sparrows Point
-and the greater Baltimore maritime community.
-
+<p>
+A free independent maritime and port information platform bringing together weather, tides, water conditions, vessel resources, marine safety information, maps and useful tools for Sparrows Point and the greater Baltimore Harbor region.
 </p>
-
 
 <div class="hero-buttons">
 
-<a href="#now"
-class="btn-primary">
-
+<a class="primary" href="#now">
 <i class="fa-solid fa-gauge-high"></i>
-
 Sparrows Point Now
-
 </a>
 
-
-<a href="#map"
-class="btn-secondary">
-
+<a class="secondary" href="#map">
 <i class="fa-solid fa-map-location-dot"></i>
-
-Explore Port Map
-
+Explore Harbor Map
 </a>
 
-
-<a href="#resources"
-class="btn-secondary">
-
-<i class="fa-solid fa-link"></i>
-
+<a class="secondary" href="#resources">
+<i class="fa-solid fa-compass"></i>
 Official Resources
-
 </a>
 
 </div>
-
 </div>
-
 </div>
-
 </section>
-
 
 <div class="harbor-line"></div>
 
+<main>
 
+<!-- LIVE INFORMATION -->
 
-<main id="main">
-
-
-
-<!-- SPARROWS POINT NOW -->
-
-<section
-id="now"
-class="section">
-
+<section id="now" class="section">
 <div class="container">
 
-
-<div class="section-title-small">
-
-Live Information
-
-</div>
-
+<div class="eyebrow">Live Information</div>
 
 <h2 class="section-title">
-
 Sparrows Point Now
-
 </h2>
 
-
-<p class="section-description">
-
-Current publicly available maritime and weather information
-from official sources. Each live data source is identified,
-and official source links are provided for verification.
-
+<p class="section-copy">
+Current publicly available weather, water and marine information. Live feeds automatically refresh while this page remains open. Important operational and safety information should always be confirmed directly with the official source.
 </p>
 
+<div class="dashboard">
 
-<div class="now-grid">
-
-
-<!-- TEMPERATURE -->
-
-<div class="glass card metric-card">
-
-<div class="metric-top">
-
+<div class="glass card metric">
+<div class="metric-head">
 <i class="fa-solid fa-temperature-half metric-icon"></i>
-
-<span class="live-label">
-
-<span class="live-dot"></span>
-NWS
-
-</span>
-
+<span class="source"><span class="dot"></span>NWS</span>
 </div>
-
-<div class="metric-label">
-Temperature
-</div>
-
-<div
-id="temperature"
-class="metric-value">
-
-Loading...
-
-</div>
-
-<div
-id="temperatureNote"
-class="metric-note">
-
+<div class="metric-label">Temperature</div>
+<div id="temperature" class="metric-value">Loading...</div>
+<div id="temperatureNote" class="metric-note">
 National Weather Service
-
+</div>
 </div>
 
-</div>
-
-
-
-<!-- WIND -->
-
-<div class="glass card metric-card">
-
-<div class="metric-top">
-
+<div class="glass card metric">
+<div class="metric-head">
 <i class="fa-solid fa-wind metric-icon"></i>
-
-<span class="live-label">
-
-<span class="live-dot"></span>
-NWS
-
-</span>
-
+<span class="source"><span class="dot"></span>NWS</span>
 </div>
-
-<div class="metric-label">
-Wind
-</div>
-
-<div
-id="wind"
-class="metric-value">
-
-Loading...
-
-</div>
-
-<div
-id="windNote"
-class="metric-note">
-
+<div class="metric-label">Wind</div>
+<div id="wind" class="metric-value">Loading...</div>
+<div class="metric-note">
 National Weather Service
-
+</div>
 </div>
 
-</div>
-
-
-
-<!-- WATER LEVEL -->
-
-<div class="glass card metric-card">
-
-<div class="metric-top">
-
+<div class="glass card metric">
+<div class="metric-head">
 <i class="fa-solid fa-water metric-icon"></i>
-
-<span class="live-label">
-
-<span class="live-dot"></span>
-NOAA
-
-</span>
-
+<span class="source"><span class="dot"></span>NOAA</span>
 </div>
-
 <div class="metric-label">
 Baltimore Water Level
 </div>
-
-<div
-id="waterLevel"
-class="metric-value">
-
+<div id="waterLevel" class="metric-value">
 Loading...
-
+</div>
+<div id="waterLevelNote" class="metric-note">
+NOAA Baltimore Station 8574680
+</div>
 </div>
 
-<div
-id="waterLevelNote"
-class="metric-note">
-
-NOAA Station 8574680
-
-</div>
-
-</div>
-
-
-
-<!-- NEXT TIDE -->
-
-<div class="glass card metric-card">
-
-<div class="metric-top">
-
+<div class="glass card metric">
+<div class="metric-head">
 <i class="fa-solid fa-arrow-up-from-water-pump metric-icon"></i>
-
-<span class="live-label">
-
-<span class="live-dot"></span>
-NOAA
-
-</span>
-
+<span class="source"><span class="dot"></span>NOAA</span>
 </div>
-
 <div class="metric-label">
 Next Predicted Tide
 </div>
-
-<div
-id="nextTide"
-class="metric-value">
-
+<div id="nextTide" class="metric-value">
 Loading...
-
+</div>
+<div id="nextTideNote" class="metric-note">
+NOAA Prediction
+</div>
 </div>
 
-<div
-id="nextTideNote"
-class="metric-note">
-
-NOAA Station 8574680
-
-</div>
-
-</div>
-
-
-
-<!-- FORECAST -->
-
-<div class="glass card metric-card">
-
-<div class="metric-top">
-
+<div class="glass card metric">
+<div class="metric-head">
 <i class="fa-solid fa-cloud-sun metric-icon"></i>
-
-<span class="live-label">
-
-<span class="live-dot"></span>
-NWS
-
-</span>
-
+<span class="source"><span class="dot"></span>NWS</span>
 </div>
-
-<div class="metric-label">
-Forecast
-</div>
-
-<div
-id="forecast"
+<div class="metric-label">Forecast</div>
+<div id="forecast"
 class="metric-value"
 style="font-size:16px;">
-
 Loading...
-
 </div>
-
-<div
-id="forecastNote"
-class="metric-note">
-
+<div id="forecastNote" class="metric-note">
 Official forecast
-
+</div>
 </div>
 
-</div>
-
-
-
-<!-- WEATHER ALERT -->
-
-<div class="glass card metric-card">
-
-<div class="metric-top">
-
+<div class="glass card metric">
+<div class="metric-head">
 <i class="fa-solid fa-triangle-exclamation metric-icon"
-style="color:#f6ae2d;"></i>
-
-<span class="live-label">
-
-NWS
-
-</span>
-
+style="color:#f5b642;"></i>
+<span class="source">NWS</span>
 </div>
-
 <div class="metric-label">
-Active Weather Alerts
+Weather Alerts
 </div>
-
-<div
-id="alertCount"
-class="metric-value">
-
+<div id="alertCount" class="metric-value">
 Loading...
-
 </div>
-
 <div class="metric-note">
-
-For the Sparrows Point area
-
+Sparrows Point area
+</div>
 </div>
 
-</div>
-
-
-
-<!-- PORT TIME -->
-
-<div class="glass card metric-card">
-
-<div class="metric-top">
-
+<div class="glass card metric">
+<div class="metric-head">
 <i class="fa-solid fa-clock metric-icon"></i>
-
-<span class="live-label">
-LOCAL
-</span>
-
+<span class="source">LOCAL</span>
 </div>
-
 <div class="metric-label">
-Baltimore Port Time
+Baltimore Time
 </div>
-
-<div
-id="portTime"
-class="metric-value">
-
---
-
-</div>
-
-<div
-id="portDate"
-class="metric-note">
-
+<div id="portTime" class="metric-value">--</div>
+<div id="portDate" class="metric-note">
 Eastern Time
-
+</div>
 </div>
 
-</div>
-
-
-
-<!-- UPDATE -->
-
-<div class="glass card metric-card">
-
-<div class="metric-top">
-
+<div class="glass card metric">
+<div class="metric-head">
 <i class="fa-solid fa-arrows-rotate metric-icon"></i>
-
-<span class="live-label">
-STATUS
-</span>
-
+<span class="source">AUTO</span>
 </div>
-
 <div class="metric-label">
-Dashboard Updated
+Live Data Updated
 </div>
-
-<div
-id="dashboardUpdated"
+<div id="dashboardUpdated"
 class="metric-value"
 style="font-size:17px;">
-
 --
-
 </div>
-
 <div class="metric-note">
-
-Refresh page for newest observations
-
+Automatically refreshes
+</div>
 </div>
 
 </div>
 
+<div class="alert-box">
 
-</div>
-
-
-
-<!-- WEATHER ALERT DETAILS -->
-
-<div class="alert-panel">
-
-<div class="alert-header">
+<div class="alert-heading">
 
 <h3>
-
-<i
-class="fa-solid fa-triangle-exclamation"
-style="color:#f6ae2d;margin-right:7px;">
-</i>
-
+<i class="fa-solid fa-triangle-exclamation"
+style="color:#f5b642;margin-right:7px;"></i>
 National Weather Service Alerts
-
 </h3>
 
-<div class="alert-source">
-
+<span style="font-size:10px;color:#7d95a3;">
 Official NWS data
+</span>
 
 </div>
 
-</div>
-
-
-<div
-id="alertList"
-class="alert-list">
+<div id="alertList" class="alert-list">
 
 <div class="alert-item">
-
 <div class="alert-detail">
-Checking for active alerts...
+Checking for active weather alerts...
+</div>
 </div>
 
 </div>
-
-</div>
-
 
 <div style="margin-top:14px;">
 
-<a
+<a class="resource-link"
 href="https://www.weather.gov/"
 target="_blank"
-rel="noopener noreferrer"
-class="resource-link">
-
+rel="noopener noreferrer">
 View Official National Weather Service →
-
 </a>
 
 </div>
-
 </div>
 
-
 </div>
-
 </section>
 
+<!-- FREE INFORMATION -->
 
-
-
-<!-- VESSEL / PORT INFORMATION -->
-
-<section
-id="vessels"
-class="section"
+<section class="section"
 style="background:rgba(2,15,23,.35);">
 
 <div class="container">
 
-
-<div class="section-title-small">
-
-Ships & Port Operations
-
-</div>
-
+<div class="eyebrow">Free Information</div>
 
 <h2 class="section-title">
-
-Vessel & Port Information
-
+One Port. One Information Gateway.
 </h2>
 
-
-<p class="section-description">
-
-Use authoritative port resources and appropriately licensed
-AIS services for vessel schedules, arrivals and vessel positions.
-USPPO.com does not invent vessel ETAs or berth assignments.
-
+<p class="section-copy">
+USPPO.com is designed to make useful Sparrows Point and Baltimore Harbor information easier to find without requiring registration, payment or personal information.
 </p>
 
+<div class="feature-grid">
 
-<div class="resource-grid">
+<div class="glass card feature">
+<i class="fa-solid fa-cloud-sun-rain"></i>
+<h3>Weather</h3>
+<p>
+Current weather, wind, forecasts and active National Weather Service alerts.
+</p>
+</div>
 
+<div class="glass card feature">
+<i class="fa-solid fa-water"></i>
+<h3>Tides & Water</h3>
+<p>
+NOAA Baltimore water levels and tide predictions.
+</p>
+</div>
 
-<a
-href="https://mpa.maryland.gov/Pages/news-publications.aspx"
-target="_blank"
-rel="noopener noreferrer"
-class="glass card resource-card">
-
-<div class="resource-icon">
-
+<div class="glass card feature">
 <i class="fa-solid fa-ship"></i>
-
+<h3>Vessel Resources</h3>
+<p>
+Access port information and independent AIS vessel-tracking resources.
+</p>
 </div>
 
-<h3>
-
-Port of Baltimore Vessel Schedule
-
-</h3>
-
-<p>
-
-Access the Maryland Port Administration's
-Public Terminal Vessel Schedule and port information.
-
-</p>
-
-<span class="resource-link">
-
-Official Port Source →
-
-</span>
-
-</a>
-
-
-
-<a
-href="https://www.navcen.uscg.gov/broadcast-notice-to-mariners-search-results"
-target="_blank"
-rel="noopener noreferrer"
-class="glass card resource-card">
-
-<div class="resource-icon">
-
+<div class="glass card feature">
 <i class="fa-solid fa-tower-broadcast"></i>
-
+<h3>Marine Notices</h3>
+<p>
+Access Coast Guard navigation and marine safety information.
+</p>
 </div>
 
-<h3>
+<div class="glass card feature">
+<i class="fa-solid fa-map-location-dot"></i>
+<h3>Harbor Map</h3>
+<p>
+Interactive geographic reference map for Sparrows Point and Baltimore Harbor.
+</p>
+</div>
 
-USCG Notices to Mariners
+<div class="glass card feature">
+<i class="fa-solid fa-calculator"></i>
+<h3>Free Tools</h3>
+<p>
+Maritime conversions, container references and useful terminology.
+</p>
+</div>
 
-</h3>
+<div class="glass card feature">
+<i class="fa-solid fa-shield-halved"></i>
+<h3>Safety Resources</h3>
+<p>
+Direct access to Coast Guard, NOAA, NWS and emergency resources.
+</p>
+</div>
+
+<div class="glass card feature">
+<i class="fa-solid fa-compass"></i>
+<h3>Official Links</h3>
+<p>
+A simple gateway to authoritative maritime and government resources.
+</p>
+</div>
+
+</div>
+</div>
+</section>
+
+<!-- VESSELS -->
+
+<section id="vessels" class="section">
+
+<div class="container">
+
+<div class="eyebrow">
+Ships & Harbor
+</div>
+
+<h2 class="section-title">
+Vessel & Port Information
+</h2>
+
+<p class="section-copy">
+Access vessel and port information through official port resources and independent AIS providers. USPPO.com does not create vessel positions, arrival times or berth assignments.
+</p>
+
+<div class="grid-3">
+
+<a class="glass card info-card"
+href="https://mpa.maryland.gov/"
+target="_blank"
+rel="noopener noreferrer">
+
+<div class="icon-box">
+<i class="fa-solid fa-anchor"></i>
+</div>
+
+<h3>Port of Baltimore</h3>
 
 <p>
-
-Review current U.S. Coast Guard navigation and
-marine safety notices for Maryland and surrounding waterways.
-
+Access official Maryland Port Administration and Port of Baltimore information.
 </p>
 
 <span class="resource-link">
-
-View Coast Guard Notices →
-
+Official Port Resource →
 </span>
 
 </a>
 
+<a class="glass card info-card"
+href="https://www.navcen.uscg.gov/broadcast-notice-to-mariners-search?district=5"
+target="_blank"
+rel="noopener noreferrer">
 
+<div class="icon-box">
+<i class="fa-solid fa-tower-broadcast"></i>
+</div>
 
-<a
+<h3>Maryland Marine Notices</h3>
+
+<p>
+Search current U.S. Coast Guard East District Broadcast Notices to Mariners, including Maryland-NCR.
+</p>
+
+<span class="resource-link">
+US Coast Guard →
+</span>
+
+</a>
+
+<a class="glass card info-card"
 href="https://www.vesselfinder.com/"
 target="_blank"
-rel="noopener noreferrer"
-class="glass card resource-card">
+rel="noopener noreferrer">
 
-<div class="resource-icon">
-
+<div class="icon-box">
 <i class="fa-solid fa-satellite"></i>
-
 </div>
 
-<h3>
-
-AIS Vessel Tracking
-
-</h3>
+<h3>AIS Vessel Tracking</h3>
 
 <p>
-
-Open a third-party AIS vessel tracking provider.
-AIS information can be delayed or incomplete
-and is never a substitute for official navigation systems.
-
+Open an independent AIS tracking service to view available vessel-position information.
 </p>
 
 <span class="resource-link">
-
-Open AIS Provider →
-
+Open Vessel Tracking →
 </span>
 
 </a>
 
-
 </div>
 
+<div class="glass card"
+style="padding:23px;margin-top:18px;">
 
-<div
-class="glass card"
-style="padding:24px;margin-top:18px;">
+<div style="display:flex;gap:15px;align-items:flex-start;">
 
-<div
-style="
-display:flex;
-gap:15px;
-align-items:flex-start;
-">
-
-<i
-class="fa-solid fa-circle-info"
-style="
-font-size:22px;
-color:#61d4f2;
-margin-top:2px;">
-</i>
+<i class="fa-solid fa-circle-info"
+style="font-size:22px;color:#63d8f3;margin-top:2px;"></i>
 
 <div>
 
-<div
-style="
-font-weight:900;
-color:white;
-font-size:14px;">
+<strong style="color:white;font-size:14px;">
+Vessel Information Notice
+</strong>
 
-About Vessel Information
-
-</div>
-
-<div
-style="
+<div style="
 font-size:11px;
 line-height:1.7;
 color:#8ca3b1;
 margin-top:7px;">
 
-Vessel positions, berth assignments, schedules and
-estimated arrival times change frequently.
-USPPO.com directs users to port and AIS resources
-rather than presenting manually entered information
-as though it were current.
+AIS positions, vessel schedules, berth assignments and estimated arrival times can change frequently. AIS information may be delayed, incomplete or unavailable. Always use appropriate official and professional maritime sources for operational decisions.
 
+</div>
+</div>
+</div>
 </div>
 
 </div>
-
-</div>
-
-</div>
-
-
-</div>
-
 </section>
 
+<!-- MAP -->
 
-
-
-<!-- INTERACTIVE MAP -->
-
-<section
-id="map"
-class="section">
+<section id="map"
+class="section"
+style="background:rgba(2,15,23,.35);">
 
 <div class="container">
 
-
-<div class="section-title-small">
-
-Port Geography
-
+<div class="eyebrow">
+Explore the Harbor
 </div>
 
-
 <h2 class="section-title">
-
-Interactive Sparrows Point Map
-
+Sparrows Point & Baltimore Harbor Map
 </h2>
 
-
-<p class="section-description">
-
-Explore the Sparrows Point and Baltimore harbor area.
-This map is provided for general geographic reference only
-and is not a nautical chart.
-
+<p class="section-copy">
+Explore the general geography of Sparrows Point and Baltimore Harbor. This interactive map is for general geographic information only and is not a nautical chart.
 </p>
-
 
 <div class="map-layout">
 
-
-<div
-id="portMap"
-class="glass">
-</div>
-
+<div id="portMap" class="glass"></div>
 
 <div class="glass card map-side">
 
-<h3>
-
-Map Information
-
-</h3>
+<h3>Harbor Reference</h3>
 
 <p>
-
-Select a map marker to identify major geographic
-and public information points around the harbor.
-
+Explore the relationship between Sparrows Point, Baltimore Harbor and regional maritime locations.
 </p>
 
+<div class="map-list">
 
-<div class="map-key">
-
-
-<div class="map-key-item">
-
-<div class="map-key-name">
-
-⚓ Sparrows Point
-
+<div class="map-item">
+<strong>⚓ Sparrows Point</strong>
+<span>
+USPPO.com primary information area.
+</span>
 </div>
 
-<div class="map-key-text">
-
-USPPO maritime and logistics area.
-
+<div class="map-item">
+<strong>🌊 NOAA Baltimore</strong>
+<span>
+NOAA Station 8574680.
+</span>
 </div>
 
+<div class="map-item">
+<strong>🏙 Baltimore Harbor</strong>
+<span>
+Greater Baltimore maritime area.
+</span>
 </div>
 
-
-<div class="map-key-item">
-
-<div class="map-key-name">
-
-🌊 NOAA Baltimore Station
-
-</div>
-
-<div class="map-key-text">
-
-NOAA Station 8574680 near Fort McHenry.
-
+<div class="map-item">
+<strong>🌎 Chesapeake Bay</strong>
+<span>
+Regional waterway connecting Baltimore Harbor with the Atlantic maritime system.
+</span>
 </div>
 
 </div>
 
-
-<div class="map-key-item">
-
-<div class="map-key-name">
-
-🏙 Baltimore Harbor
-
-</div>
-
-<div class="map-key-text">
-
-Greater Port of Baltimore harbor area.
-
-</div>
-
-</div>
-
-
-</div>
-
-
-<div
-style="
+<div style="
 margin-top:20px;
 padding:13px;
-border:1px solid rgba(246,174,45,.2);
-background:rgba(246,174,45,.04);
+border:1px solid rgba(245,182,66,.2);
+background:rgba(245,182,66,.04);
 border-radius:10px;
 font-size:10px;
-line-height:1.6;
+line-height:1.65;
 color:#8da2af;">
 
-<strong style="color:#f6ae2d;">
+<strong style="color:#f5b642;">
 NOT FOR NAVIGATION:
 </strong>
 
-Map positions are approximate geographic references.
-Use official nautical charts and navigation systems for marine operations.
-
-</div>
-
-
-</div>
-
+Map locations are approximate geographic references. Use official nautical charts, navigation systems and professional maritime resources for navigation.
 
 </div>
 
 </div>
+</div>
 
+</div>
 </section>
 
+<!-- RESOURCES -->
 
-
-
-<!-- LOGISTICS DIRECTORY -->
-
-<section
-id="logistics"
-class="section"
-style="background:rgba(2,15,23,.35);">
+<section id="resources" class="section">
 
 <div class="container">
 
-
-<div class="section-title-small">
-
-Regional Logistics
-
+<div class="eyebrow">
+Trusted Sources
 </div>
-
 
 <h2 class="section-title">
-
-Sparrows Point Logistics Directory
-
+Official Port & Maritime Resources
 </h2>
 
-
-<p class="section-description">
-
-USPPO.com is developing a free reviewed directory
-of companies serving Sparrows Point and the Baltimore
-maritime logistics community.
-
-Listings are not automatically published
-and do not constitute endorsement.
-
+<p class="section-copy">
+Direct access to government and official information useful to the Baltimore maritime community and visitors.
 </p>
 
+<div class="grid-3">
 
-<div class="service-grid">
-
-
-<div class="glass card service-card">
-
-<i class="fa-solid fa-truck-fast"></i>
-
-<h3>
-Drayage & Trucking
-</h3>
-
-<p>
-
-Container drayage, trucking,
-regional transportation and freight services.
-
-</p>
-
-<span class="coming">
-Reviewed listings coming soon
-</span>
-
-</div>
-
-
-
-<div class="glass card service-card">
-
-<i class="fa-solid fa-warehouse"></i>
-
-<h3>
-Warehousing
-</h3>
-
-<p>
-
-Warehousing, distribution,
-cross-docking, fulfillment and transloading.
-
-</p>
-
-<span class="coming">
-Reviewed listings coming soon
-</span>
-
-</div>
-
-
-
-<div class="glass card service-card">
-
-<i class="fa-solid fa-snowflake"></i>
-
-<h3>
-Cold Storage
-</h3>
-
-<p>
-
-Temperature-controlled warehousing
-and refrigerated logistics services.
-
-</p>
-
-<span class="coming">
-Reviewed listings coming soon
-</span>
-
-</div>
-
-
-
-<div class="glass card service-card">
-
-<i class="fa-solid fa-file-signature"></i>
-
-<h3>
-Customs Brokerage
-</h3>
-
-<p>
-
-Customs brokerage,
-trade documentation and import/export support.
-
-</p>
-
-<span class="coming">
-Reviewed listings coming soon
-</span>
-
-</div>
-
-
-
-<div class="glass card service-card">
-
-<i class="fa-solid fa-train"></i>
-
-<h3>
-Rail & Intermodal
-</h3>
-
-<p>
-
-Rail transportation,
-intermodal connections and transfer services.
-
-</p>
-
-<span class="coming">
-Resources coming soon
-</span>
-
-</div>
-
-
-
-<div class="glass card service-card">
-
-<i class="fa-solid fa-screwdriver-wrench"></i>
-
-<h3>
-Truck & Equipment Repair
-</h3>
-
-<p>
-
-Truck, chassis,
-container and logistics equipment services.
-
-</p>
-
-<span class="coming">
-Reviewed listings coming soon
-</span>
-
-</div>
-
-
-
-<div class="glass card service-card">
-
-<i class="fa-solid fa-gas-pump"></i>
-
-<h3>
-Fuel & Truck Services
-</h3>
-
-<p>
-
-Commercial fuel,
-truck stops and driver support resources.
-
-</p>
-
-<span class="coming">
-Resources coming soon
-</span>
-
-</div>
-
-
-
-<div class="glass card service-card">
-
-<i class="fa-solid fa-scale-balanced"></i>
-
-<h3>
-Freight Forwarding
-</h3>
-
-<p>
-
-International freight forwarding
-and logistics coordination resources.
-
-</p>
-
-<span class="coming">
-Reviewed listings coming soon
-</span>
-
-</div>
-
-
-
-<div class="glass card service-card">
-
-<i class="fa-solid fa-boxes-stacked"></i>
-
-<h3>
-Container Services
-</h3>
-
-<p>
-
-Container storage,
-repair, chassis and related equipment services.
-
-</p>
-
-<span class="coming">
-Reviewed listings coming soon
-</span>
-
-</div>
-
-
-</div>
-
-
-<div
-class="glass card"
-style="
-margin-top:18px;
-padding:24px;">
-
-<div
-style="
-display:flex;
-justify-content:space-between;
-gap:20px;
-align-items:center;
-flex-wrap:wrap;">
-
-<div>
-
-<div
-style="
-color:white;
-font-weight:900;">
-
-Maryland logistics business?
-
-</div>
-
-<div
-style="
-color:#879eac;
-font-size:11px;
-margin-top:5px;">
-
-You may request consideration for a free listing.
-Listings are reviewed before publication.
-
-</div>
-
-</div>
-
-
-<a
-href="mailto:admin@usppo.com?subject=USPPO.com%20Free%20Business%20Listing%20Request"
-class="btn-primary">
-
-<i class="fa-solid fa-building"></i>
-
-Request Free Listing
-
-</a>
-
-</div>
-
-</div>
-
-
-</div>
-
-</section>
-
-
-
-
-<!-- OFFICIAL RESOURCES -->
-
-<section
-id="resources"
-class="section">
-
-<div class="container">
-
-
-<div class="section-title-small">
-
-Trusted Resources
-
-</div>
-
-
-<h2 class="section-title">
-
-Official Maritime & Port Resources
-
-</h2>
-
-
-<p class="section-description">
-
-Direct access to government agencies and authoritative
-resources relevant to maritime users, logistics companies
-and visitors to the Baltimore port region.
-
-</p>
-
-
-<div class="resource-grid">
-
-
-<a
+<a class="glass card info-card"
 href="https://www.weather.gov/"
 target="_blank"
-rel="noopener noreferrer"
-class="glass card resource-card">
-
-<div class="resource-icon">
-
+rel="noopener noreferrer">
+<div class="icon-box">
 <i class="fa-solid fa-cloud-sun"></i>
-
 </div>
-
-<h3>
-National Weather Service
-</h3>
-
+<h3>National Weather Service</h3>
 <p>
-Official weather forecasts,
-warnings and weather information.
+Official forecasts, watches, warnings and advisories.
 </p>
-
-<span class="resource-link">
-Visit NWS →
-</span>
-
+<span class="resource-link">Open NWS →</span>
 </a>
 
-
-
-<a
-href="https://tidesandcurrents.noaa.gov/"
+<a class="glass card info-card"
+href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=8574680"
 target="_blank"
-rel="noopener noreferrer"
-class="glass card resource-card">
-
-<div class="resource-icon">
-
+rel="noopener noreferrer">
+<div class="icon-box">
 <i class="fa-solid fa-water"></i>
-
 </div>
-
-<h3>
-NOAA Tides & Currents
-</h3>
-
+<h3>NOAA Baltimore Station</h3>
 <p>
-Official tides,
-water levels and coastal observations.
+Official Baltimore tide predictions, water levels and coastal observations.
 </p>
-
-<span class="resource-link">
-Visit NOAA →
-</span>
-
+<span class="resource-link">Open NOAA →</span>
 </a>
 
-
-
-<a
+<a class="glass card info-card"
 href="https://www.navcen.uscg.gov/"
 target="_blank"
-rel="noopener noreferrer"
-class="glass card resource-card">
-
-<div class="resource-icon">
-
+rel="noopener noreferrer">
+<div class="icon-box">
 <i class="fa-solid fa-shield-halved"></i>
-
 </div>
-
-<h3>
-US Coast Guard Navigation Center
-</h3>
-
+<h3>US Coast Guard NAVCEN</h3>
 <p>
-Navigation safety,
-Notices to Mariners and maritime resources.
+Navigation safety information and maritime notices.
 </p>
-
-<span class="resource-link">
-Visit USCG →
-</span>
-
+<span class="resource-link">Open USCG →</span>
 </a>
 
-
-
-<a
-href="https://www.cbp.gov/"
-target="_blank"
-rel="noopener noreferrer"
-class="glass card resource-card">
-
-<div class="resource-icon">
-
-<i class="fa-solid fa-passport"></i>
-
-</div>
-
-<h3>
-US Customs & Border Protection
-</h3>
-
-<p>
-Official customs,
-trade and import/export information.
-</p>
-
-<span class="resource-link">
-Visit CBP →
-</span>
-
-</a>
-
-
-
-<a
+<a class="glass card info-card"
 href="https://mpa.maryland.gov/"
 target="_blank"
-rel="noopener noreferrer"
-class="glass card resource-card">
-
-<div class="resource-icon">
-
+rel="noopener noreferrer">
+<div class="icon-box">
 <i class="fa-solid fa-anchor"></i>
-
 </div>
-
-<h3>
-Maryland Port Administration
-</h3>
-
+<h3>Maryland Port Administration</h3>
 <p>
-Official Port of Baltimore information,
-terminals, vessel schedules and port updates.
+Official Port of Baltimore information and public resources.
 </p>
-
-<span class="resource-link">
-Visit Port of Baltimore →
-</span>
-
+<span class="resource-link">Open Port Resource →</span>
 </a>
 
+<a class="glass card info-card"
+href="https://www.cbp.gov/"
+target="_blank"
+rel="noopener noreferrer">
+<div class="icon-box">
+<i class="fa-solid fa-passport"></i>
+</div>
+<h3>US Customs & Border Protection</h3>
+<p>
+Official customs, trade and import/export information.
+</p>
+<span class="resource-link">Open CBP →</span>
+</a>
 
-
-<a
+<a class="glass card info-card"
 href="https://www.maritime.dot.gov/"
 target="_blank"
-rel="noopener noreferrer"
-class="glass card resource-card">
-
-<div class="resource-icon">
-
+rel="noopener noreferrer">
+<div class="icon-box">
 <i class="fa-solid fa-ship"></i>
-
 </div>
-
-<h3>
-US Maritime Administration
-</h3>
-
+<h3>US Maritime Administration</h3>
 <p>
-Federal maritime transportation,
-ports and shipping resources.
+Federal maritime transportation and port resources.
 </p>
-
-<span class="resource-link">
-Visit MARAD →
-</span>
-
+<span class="resource-link">Open MARAD →</span>
 </a>
 
-
-
-<a
+<a class="glass card info-card"
 href="https://www.noaa.gov/"
 target="_blank"
-rel="noopener noreferrer"
-class="glass card resource-card">
-
-<div class="resource-icon">
-
+rel="noopener noreferrer">
+<div class="icon-box">
 <i class="fa-solid fa-earth-americas"></i>
-
 </div>
-
-<h3>
-NOAA
-</h3>
-
+<h3>NOAA</h3>
 <p>
-Ocean,
-weather and coastal science resources.
+Weather, oceans, coastal science and environmental information.
 </p>
-
-<span class="resource-link">
-Visit NOAA →
-</span>
-
+<span class="resource-link">Open NOAA →</span>
 </a>
 
-
-
-<a
+<a class="glass card info-card"
 href="https://www.ready.gov/"
 target="_blank"
-rel="noopener noreferrer"
-class="glass card resource-card">
-
-<div class="resource-icon">
-
+rel="noopener noreferrer">
+<div class="icon-box">
 <i class="fa-solid fa-kit-medical"></i>
-
 </div>
-
-<h3>
-Emergency Preparedness
-</h3>
-
+<h3>Emergency Preparedness</h3>
 <p>
-Federal emergency preparedness
-and safety information.
+Federal emergency planning and preparedness information.
 </p>
-
-<span class="resource-link">
-Visit Ready.gov →
-</span>
-
+<span class="resource-link">Open Ready.gov →</span>
 </a>
 
-
-
-<a
+<a class="glass card info-card"
 href="https://www.chesapeakebay.net/"
 target="_blank"
-rel="noopener noreferrer"
-class="glass card resource-card">
-
-<div class="resource-icon">
-
+rel="noopener noreferrer">
+<div class="icon-box">
 <i class="fa-solid fa-fish"></i>
-
 </div>
-
-<h3>
-Chesapeake Bay Resources
-</h3>
-
+<h3>Chesapeake Bay</h3>
 <p>
-Regional Chesapeake Bay
-environmental and waterway information.
+Regional Chesapeake Bay environmental information.
 </p>
-
 <span class="resource-link">
-Explore Resources →
+Explore Chesapeake Bay →
 </span>
-
 </a>
 
-
 </div>
-
 </div>
-
 </section>
 
+<!-- TOOLS -->
 
-
-
-<!-- FREE TOOLS -->
-
-<section
-id="tools"
+<section id="tools"
 class="section"
 style="background:rgba(2,15,23,.35);">
 
 <div class="container">
 
-
-<div class="section-title-small">
-
-Free Tools
-
-</div>
-
+<div class="eyebrow">Free Tools</div>
 
 <h2 class="section-title">
-
-Maritime & Logistics Tools
-
+Maritime Quick Tools
 </h2>
 
-
-<p class="section-description">
-
-Simple free reference tools for mariners,
-drivers, logistics professionals and port users.
-
+<p class="section-copy">
+Simple reference tools available without registration or payment.
 </p>
 
+<div class="tools">
 
-<div class="tools-grid">
-
-
-<div class="glass card tool-box">
+<div class="glass card tool">
 
 <h3>
-
-<i
-class="fa-solid fa-calculator"
-style="color:#f6ae2d;margin-right:7px;">
-</i>
-
+<i class="fa-solid fa-calculator"
+style="color:#f5b642;margin-right:7px;"></i>
 Unit Converter
-
 </h3>
-
 
 <div class="form-row">
 
-
-<input
-id="converterValue"
+<input id="converterValue"
 type="number"
-class="form-control"
+class="control"
 placeholder="Enter value"
 aria-label="Value to convert">
 
-
-<select
-id="converterType"
-class="form-control"
+<select id="converterType"
+class="control"
 aria-label="Conversion type">
-
 
 <option value="knotsMph">
 Knots → MPH
@@ -2720,129 +1721,69 @@ Celsius → Fahrenheit
 Fahrenheit → Celsius
 </option>
 
-
 </select>
 
-
-<button
-class="convert-btn"
+<button class="convert"
 onclick="convertUnit()">
-
 Convert
-
 </button>
-
 
 </div>
 
-
-<div
-id="converterResult"
+<div id="converterResult"
 class="result"
 aria-live="polite">
 </div>
 
-
 </div>
 
-
-
-<div class="glass card tool-box">
+<div class="glass card tool">
 
 <h3>
-
-<i
-class="fa-solid fa-box"
-style="color:#61d4f2;margin-right:7px;">
-</i>
-
+<i class="fa-solid fa-box"
+style="color:#63d8f3;margin-right:7px;"></i>
 Container Quick Reference
-
 </h3>
 
-
-<div class="reference-list">
-
+<div class="reference">
 
 <div class="reference-row">
-
-<span>
-20' Standard
-</span>
-
-<span>
-Approx. 20 × 8 × 8'6"
-</span>
-
+<strong>20' Standard</strong>
+<span>Approx. 20 × 8 × 8'6"</span>
 </div>
-
 
 <div class="reference-row">
-
-<span>
-40' Standard
-</span>
-
-<span>
-Approx. 40 × 8 × 8'6"
-</span>
-
+<strong>40' Standard</strong>
+<span>Approx. 40 × 8 × 8'6"</span>
 </div>
-
 
 <div class="reference-row">
-
-<span>
-40' High Cube
-</span>
-
-<span>
-Approx. 40 × 8 × 9'6"
-</span>
-
+<strong>40' High Cube</strong>
+<span>Approx. 40 × 8 × 9'6"</span>
 </div>
-
 
 <div class="reference-row">
-
-<span>
-45' High Cube
-</span>
-
-<span>
-Approx. 45 × 8 × 9'6"
-</span>
+<strong>45' High Cube</strong>
+<span>Approx. 45 × 8 × 9'6"</span>
+</div>
 
 </div>
 
-
-</div>
-
-
-<div
-style="
+<p style="
 font-size:9px;
-line-height:1.5;
-color:#6f8795;
+color:#718896;
+line-height:1.55;
 margin-top:15px;">
 
-Dimensions are general reference values only.
-Verify specifications with the container,
-carrier or equipment provider.
+General reference only. Exact dimensions, payloads and specifications vary. Verify requirements with the applicable carrier or equipment provider.
 
+</p>
+
+</div>
 </div>
 
 </div>
-
-
-</div>
-
-</div>
-
 </section>
-
-
-
 
 <!-- GLOSSARY -->
 
@@ -2850,239 +1791,123 @@ carrier or equipment provider.
 
 <div class="container">
 
-
-<div class="section-title-small">
-
-Learn
-
-</div>
-
+<div class="eyebrow">Learn</div>
 
 <h2 class="section-title">
-
-Port & Logistics Glossary
-
+Maritime & Port Glossary
 </h2>
 
-
-<p class="section-description">
-
-A quick guide to common terminology used around ports,
-shipping and logistics.
-
+<p class="section-copy">
+Quick explanations of common shipping and port terminology.
 </p>
 
+<div class="glossary">
 
-<div class="glossary-grid">
-
-
-<div class="glass card glossary">
-
-<strong>
-AIS
-</strong>
-
+<div class="glass card term">
+<strong>AIS</strong>
 <span>
 Automatic Identification System used to exchange vessel identification and position information.
 </span>
-
 </div>
 
-
-<div class="glass card glossary">
-
-<strong>
-Berth
-</strong>
-
+<div class="glass card term">
+<strong>Berth</strong>
 <span>
-A designated location where a vessel is moored for loading, unloading or service.
+A location where a vessel may be moored for cargo operations or other services.
 </span>
-
 </div>
 
-
-<div class="glass card glossary">
-
-<strong>
-Drayage
-</strong>
-
+<div class="glass card term">
+<strong>Drayage</strong>
 <span>
-Short-distance transportation of freight or containers, often between a port and warehouse or rail terminal.
+Short-distance freight transportation commonly connecting ports, rail facilities and warehouses.
 </span>
-
 </div>
 
-
-<div class="glass card glossary">
-
-<strong>
-TEU
-</strong>
-
+<div class="glass card term">
+<strong>TEU</strong>
 <span>
-Twenty-foot equivalent unit, a standard measurement used for containerized cargo.
+Twenty-foot equivalent unit, a common measure of containerized cargo capacity.
 </span>
-
 </div>
 
-
-<div class="glass card glossary">
-
-<strong>
-Demurrage
-</strong>
-
+<div class="glass card term">
+<strong>Intermodal</strong>
 <span>
-Charges that may apply when cargo or containers remain at a terminal beyond allowed free time.
+Transportation involving multiple modes such as vessel, truck and rail.
 </span>
-
 </div>
 
-
-<div class="glass card glossary">
-
-<strong>
-Detention
-</strong>
-
+<div class="glass card term">
+<strong>Ro-Ro</strong>
 <span>
-Charges that may apply when carrier equipment is retained outside the terminal beyond permitted free time.
+Roll-on/roll-off vessel designed to carry wheeled cargo.
 </span>
-
 </div>
 
-
-<div class="glass card glossary">
-
-<strong>
-Intermodal
-</strong>
-
+<div class="glass card term">
+<strong>MMSI</strong>
 <span>
-Transportation using more than one mode such as vessel, rail and truck.
+Maritime Mobile Service Identity used to identify vessels and maritime radio stations.
 </span>
-
 </div>
 
-
-<div class="glass card glossary">
-
-<strong>
-Ro-Ro
-</strong>
-
+<div class="glass card term">
+<strong>Draft</strong>
 <span>
-Roll-on/roll-off vessel designed for wheeled cargo such as vehicles and machinery.
+The vertical distance between the waterline and the lowest part of a vessel's hull.
 </span>
-
 </div>
 
-
-<div class="glass card glossary">
-
-<strong>
-MMSI
-</strong>
-
+<div class="glass card term">
+<strong>ETA</strong>
 <span>
-Maritime Mobile Service Identity number used to identify vessels and maritime radio stations.
+Estimated Time of Arrival. Actual arrival times can change due to operational and environmental conditions.
 </span>
-
-</div>
-
-
 </div>
 
 </div>
-
+</div>
 </section>
-
-
-
 
 <!-- SAFETY -->
 
-<section
-id="safety"
-class="section">
+<section id="safety" class="section">
 
 <div class="container">
 
-
 <div class="card safety">
 
-<div class="safety-flex">
+<div class="safety-wrap">
 
 <div class="safety-icon">
-
 <i class="fa-solid fa-triangle-exclamation"></i>
-
 </div>
-
 
 <div>
 
 <h2>
-
-Important Maritime Safety Notice
-
+Important Maritime Safety Information
 </h2>
 
-
 <p>
-
-USPPO.com is an informational resource only.
-
-Information displayed or linked through this website
-must not be used for vessel navigation,
-piloting, collision avoidance,
-docking, emergency response
-or any safety-of-life decision.
-
+USPPO.com is an informational resource. Information displayed or linked through this website must not be relied upon for vessel navigation, piloting, collision avoidance, docking, emergency response or other safety-of-life decisions.
 </p>
 
-
 <p>
-
-Mariners and commercial operators must rely on
-official navigation equipment,
-nautical charts,
-Notices to Mariners,
-U.S. Coast Guard information,
-harbor pilots,
-terminal operators
-and other appropriate authoritative sources.
-
+Mariners and commercial operators should use appropriate official navigation equipment, nautical charts, Notices to Mariners, U.S. Coast Guard information, harbor pilots, terminal operators and other authoritative sources.
 </p>
 
-
 <p>
-
-AIS positions,
-weather observations,
-tides,
-maps and third-party information
-may be delayed,
-incomplete,
-unavailable or inaccurate.
-
+Weather observations, tide predictions, AIS information, maps, vessel information and third-party data can be delayed, incomplete, unavailable or inaccurate.
 </p>
 
 </div>
-
+</div>
 </div>
 
 </div>
-
-
-</div>
-
 </section>
-
-
-
 
 <!-- ABOUT -->
 
@@ -3090,144 +1915,75 @@ unavailable or inaccurate.
 
 <div class="container">
 
-
-<div
-class="glass card"
+<div class="glass card"
 style="padding:32px;">
 
-
-<div class="section-title-small">
-
+<div class="eyebrow">
 About USPPO.com
-
 </div>
 
-
-<h2
-style="
+<h2 style="
 color:white;
 font-size:25px;
 margin:9px 0 0;">
 
-An Independent Sparrows Point Information Gateway
+Free Information for Sparrows Point & Baltimore Harbor
 
 </h2>
 
-
-<p
-style="
+<p style="
 max-width:900px;
 color:#9db0bc;
 font-size:13px;
 line-height:1.75;">
 
-USPPO.com is independently operated
-and intended to make useful maritime,
-port and logistics information easier to find
-for people interested in Sparrows Point,
-Maryland and the greater Baltimore port region.
+USPPO.com is an independently operated information platform created to make useful maritime, weather, waterway, port and regional resources easier to find for people interested in Sparrows Point, Maryland and the greater Baltimore Harbor region.
 
 </p>
 
-
-<p
-style="
+<p style="
 max-width:900px;
 color:#8198a7;
 font-size:12px;
 line-height:1.75;">
 
-The USPPO name references the location code associated
-with Sparrows Point.
-Use of a geographic or transportation identifier
-does not indicate ownership,
-sponsorship,
-approval,
-endorsement or affiliation
-with the United Nations,
-United States Government,
-State of Maryland,
-Maryland Port Administration,
-Tradepoint Atlantic,
-NOAA,
-U.S. Coast Guard
-or any other public or private organization.
+USPPO.com is not a government agency, port authority, terminal operator, shipping line, carrier, navigation service or emergency service. References to geographic locations, agencies and organizations do not indicate sponsorship, ownership, endorsement or affiliation.
 
 </p>
 
-
 </div>
-
 </div>
-
 </section>
 
-
-
 </main>
-
-
-
-
-<!-- FOOTER -->
 
 <footer>
 
 <div class="container">
 
-
 <div class="footer-grid">
-
 
 <div>
 
-<div class="footer-title">
-
+<div class="footer-logo">
 USPPO<span>.com</span>
-
 </div>
-
 
 <div class="footer-copy">
-
-Independent maritime,
-port and logistics information
-for Sparrows Point,
-Maryland and the greater Baltimore region.
-
+Free independent maritime and port information for Sparrows Point, Maryland and the greater Baltimore Harbor region.
 </div>
-
 
 <div class="footer-copy">
-
-Questions,
-corrections
-or listing requests:
-
-<br><br>
-
-<a
-href="mailto:admin@usppo.com"
-style="color:#f6ae2d;">
-
-admin@usppo.com
-
-</a>
-
+No registration • No membership • No payment required
 </div>
 
 </div>
-
-
 
 <div>
 
 <div class="footer-heading">
-
 Information
-
 </div>
-
 
 <div class="footer-links">
 
@@ -3236,7 +1992,7 @@ Terms of Use
 </button>
 
 <button onclick="openModal('privacyModal')">
-Privacy Policy
+Privacy
 </button>
 
 <button onclick="openModal('sourcesModal')">
@@ -3248,1741 +2004,978 @@ Accessibility
 </button>
 
 </div>
-
 </div>
-
-
 
 <div>
 
 <div class="footer-heading">
-
-Quick Access
-
+Explore
 </div>
-
 
 <div class="footer-links">
 
-<a href="#now">
-Live Port Information
-</a>
+<a href="#now">Sparrows Point Now</a>
+<a href="#vessels">Vessel Information</a>
+<a href="#map">Harbor Map</a>
+<a href="#resources">Official Resources</a>
+<a href="#tools">Free Tools</a>
+<a href="#safety">Safety</a>
 
-<a href="#vessels">
-Vessel Resources
-</a>
-
-<a href="#map">
-Interactive Map
-</a>
-
-<a href="#resources">
-Official Resources
-</a>
-
-<a href="#tools">
-Free Tools
-</a>
-
+</div>
 </div>
 
 </div>
-
-
-</div>
-
-
 
 <div class="copyright">
 
-© 2026 USPPO.com.
-All rights reserved.
+© 2026 USPPO.com. All rights reserved.
 
 <br><br>
 
-USPPO.com is an independent informational website
-and is not affiliated with,
-sponsored by,
-endorsed by
-or operated by the United Nations,
-UNECE,
-National Oceanic and Atmospheric Administration,
-National Weather Service,
-U.S. Coast Guard,
-U.S. Customs and Border Protection,
-U.S. Maritime Administration,
-State of Maryland,
-Maryland Port Administration,
-Tradepoint Atlantic
-or any port,
-terminal
-or transportation operator
-unless expressly stated.
+USPPO.com is an independent informational website and is not affiliated with, sponsored by, endorsed by or operated by the United States Government, State of Maryland, Maryland Port Administration, NOAA, National Weather Service, U.S. Coast Guard, U.S. Customs and Border Protection, U.S. Maritime Administration, any terminal operator, shipping company, port authority or other organization unless expressly stated.
 
 <br><br>
 
-Third-party names,
-logos
-and trademarks remain the property
-of their respective owners.
-References are provided for identification
-and informational purposes only.
+Third-party names, trademarks and services remain the property of their respective owners. External links are provided for informational convenience.
 
 </div>
 
-
 </div>
-
 </footer>
 
+<!-- TERMS -->
 
-
-
-<!-- TERMS MODAL -->
-
-<div
-id="termsModal"
+<div id="termsModal"
 class="modal"
 role="dialog"
 aria-modal="true"
 aria-labelledby="termsTitle">
 
-
 <div class="modal-card">
 
-
-<button
-class="modal-close"
+<button class="modal-close"
 onclick="closeModal('termsModal')"
-aria-label="Close Terms">
-
+aria-label="Close">
 <i class="fa-solid fa-xmark"></i>
-
 </button>
 
-
 <h2 id="termsTitle">
-
 Terms of Use
-
 </h2>
 
-
 <p>
-
-<strong>
-Last Updated:
-</strong>
-
+<strong>Last Updated:</strong>
 September 30, 2026
-
 </p>
 
-
-<h3>
-1. Informational Purpose
-</h3>
+<h3>Informational Purpose</h3>
 
 <p>
-
-USPPO.com provides general maritime,
-logistics,
-weather,
-port,
-directory
-and related information.
-
-Information is provided for general informational purposes
-and is not legal,
-navigation,
-transportation,
-customs,
-financial
-or professional advice.
-
+USPPO.com provides general maritime, weather, waterway, port and related information for informational purposes only.
 </p>
 
-
-<h3>
-2. Independent Website
-</h3>
+<h3>Independent Website</h3>
 
 <p>
-
-USPPO.com is independently operated.
-
-It is not a government agency,
-port authority,
-terminal operator,
-shipping line,
-carrier,
-freight broker
-or navigation service.
-
+USPPO.com is independently operated and is not a government agency, port authority, terminal operator, shipping line, carrier or navigation service.
 </p>
 
-
-<h3>
-3. No Navigation or Safety-of-Life Use
-</h3>
+<h3>No Navigation or Safety-of-Life Use</h3>
 
 <p>
-
-Information on USPPO.com must not be relied upon
-for vessel navigation,
-piloting,
-docking,
-collision avoidance,
-emergency response
-or safety-of-life decisions.
-
-Appropriate official navigation equipment
-and authoritative sources must be used.
-
+Information provided through USPPO.com must not be relied upon for vessel navigation, piloting, collision avoidance, docking, emergency response or safety-of-life decisions.
 </p>
 
-
-<h3>
-4. Third-Party Information
-</h3>
+<h3>Live and Third-Party Information</h3>
 
 <p>
-
-Weather,
-tides,
-maps,
-AIS information,
-vessel information,
-port schedules
-and other information may originate
-from third-party or government sources.
-
-Such information may be delayed,
-incomplete,
-inaccurate
-or temporarily unavailable.
-
-Users should verify important information
-directly with the applicable official source.
-
+Weather, tides, maps, AIS information, vessel information and other data may originate from government or independent third-party sources. Information may be delayed, unavailable, incomplete or inaccurate. Important information should be verified directly with the appropriate official source.
 </p>
 
-
-<h3>
-5. Business Listings
-</h3>
+<h3>External Websites</h3>
 
 <p>
-
-Business listings and links
-are provided for informational convenience.
-
-A listing does not constitute
-an endorsement,
-certification,
-recommendation
-or guarantee.
-
-Users are responsible for independently verifying
-licenses,
-insurance,
-operating authority,
-qualifications,
-pricing
-and suitability before conducting business.
-
+USPPO.com may provide links to external websites for convenience. USPPO.com does not control their content, availability, security, accuracy or privacy practices.
 </p>
 
-
-<h3>
-6. Transactions
-</h3>
+<h3>No Transactions</h3>
 
 <p>
-
-USPPO.com is not a party
-to transactions between users
-and third-party service providers
-unless expressly stated otherwise.
-
+This version of USPPO.com does not provide freight brokerage, booking, payment or commercial transaction services.
 </p>
 
-
-<h3>
-7. External Websites
-</h3>
+<h3>Availability</h3>
 
 <p>
-
-USPPO.com may link to third-party websites.
-
-USPPO.com does not control
-their content,
-privacy practices,
-security,
-availability
-or business practices.
-
+USPPO.com is provided on an "as available" basis. No guarantee is made that the website or any information source will always be available, current, complete or error-free.
 </p>
-
-
-<h3>
-8. Availability
-</h3>
-
-<p>
-
-The website is provided
-on an "as available" basis.
-
-No guarantee is made
-that information or services
-will always be uninterrupted,
-current,
-complete
-or error-free.
-
-</p>
-
-
-<h3>
-9. Corrections
-</h3>
-
-<p>
-
-If you believe information displayed
-on USPPO.com is incorrect,
-please contact admin@usppo.com.
-
-</p>
-
-
-<h3>
-10. Changes
-</h3>
-
-<p>
-
-These terms may be revised
-as USPPO.com develops
-new services and capabilities.
-
-</p>
-
 
 </div>
-
 </div>
-
-
-
 
 <!-- PRIVACY -->
 
-<div
-id="privacyModal"
+<div id="privacyModal"
 class="modal"
 role="dialog"
 aria-modal="true"
 aria-labelledby="privacyTitle">
 
-
 <div class="modal-card">
 
-
-<button
-class="modal-close"
+<button class="modal-close"
 onclick="closeModal('privacyModal')"
-aria-label="Close Privacy Policy">
-
+aria-label="Close">
 <i class="fa-solid fa-xmark"></i>
-
 </button>
 
-
 <h2 id="privacyTitle">
-
-Privacy Policy
-
+Privacy
 </h2>
 
-
 <p>
-
-<strong>
-Last Updated:
-</strong>
-
+<strong>Last Updated:</strong>
 September 30, 2026
-
 </p>
-
 
 <p>
-
-USPPO.com is designed
-to minimize unnecessary collection
-of personal information.
-
+This version of USPPO.com does not require visitors to create an account, purchase a membership, submit a contact form or provide payment information.
 </p>
 
-
-<h3>
-Information You Voluntarily Provide
-</h3>
+<h3>Third-Party Technical Services</h3>
 
 <p>
-
-If you voluntarily contact USPPO.com
-by email,
-information included in that message
-may be received and retained
-for the purpose of responding to your inquiry,
-reviewing a listing request,
-correcting information
-or handling another request you initiated.
-
+USPPO.com uses or may communicate with third-party services necessary to provide website features, including mapping, content-delivery and public information services. Requests to those services may transmit ordinary technical information such as IP address, browser information and referring-page information according to the applicable provider's policies.
 </p>
 
-
-<h3>
-Sensitive Information
-</h3>
+<h3>External Websites</h3>
 
 <p>
-
-Please do not submit passwords,
-Social Security numbers,
-payment-card numbers,
-bank information,
-government identification numbers
-or other unnecessary sensitive information.
-
+When visitors follow links to external websites, those websites operate under their own terms and privacy policies.
 </p>
 
-
-<h3>
-Technical Services
-</h3>
+<h3>Future Changes</h3>
 
 <p>
-
-This website may rely on hosting providers,
-content-delivery networks,
-mapping providers,
-government data services
-and other technical services.
-
-Those services may process
-technical information
-according to their own policies.
-
+If USPPO.com later introduces analytics, advertising, accounts, forms, subscriptions, payments or other technologies that materially change its data practices, this privacy notice should be reviewed and updated before those features are introduced.
 </p>
-
-
-<h3>
-Cookies and Advertising
-</h3>
-
-<p>
-
-This version of USPPO.com
-does not intentionally require
-user accounts,
-advertising profiles
-or payment information.
-
-If advertising,
-analytics,
-accounts
-or additional tracking technologies
-are added,
-this policy should be updated accordingly.
-
-</p>
-
-
-<h3>
-Privacy Questions
-</h3>
-
-<p>
-
-Questions or requests concerning
-information voluntarily provided
-to USPPO.com may be directed to:
-
-<strong>
-admin@usppo.com
-</strong>
-
-</p>
-
 
 </div>
-
 </div>
 
+<!-- SOURCES -->
 
-
-
-<!-- DATA SOURCES -->
-
-<div
-id="sourcesModal"
+<div id="sourcesModal"
 class="modal"
 role="dialog"
 aria-modal="true"
 aria-labelledby="sourcesTitle">
 
-
 <div class="modal-card">
 
-
-<button
-class="modal-close"
+<button class="modal-close"
 onclick="closeModal('sourcesModal')"
-aria-label="Close Data Sources">
-
+aria-label="Close">
 <i class="fa-solid fa-xmark"></i>
-
 </button>
 
-
 <h2 id="sourcesTitle">
-
-Data Sources & Attribution
-
+Data Sources
 </h2>
 
-
-<h3>
-National Weather Service
-</h3>
+<h3>National Weather Service</h3>
 
 <p>
-
-Weather forecasts and active alerts
-may be retrieved through
-the National Weather Service public API.
-
-USPPO.com is not affiliated
-with the National Weather Service.
-
+Weather forecasts and active weather alerts may be retrieved through National Weather Service public data services.
 </p>
 
-
-<h3>
-NOAA Tides & Currents
-</h3>
+<h3>NOAA Tides & Currents</h3>
 
 <p>
-
-Water-level and tide information
-may be retrieved through
-NOAA Tides & Currents services.
-
-The current dashboard is configured
-to request information associated
-with NOAA Baltimore Station 8574680.
-
+Water-level and tide information is requested from NOAA Tides & Currents using Baltimore, Maryland Station 8574680.
 </p>
 
-
-<h3>
-Maryland Port Administration
-</h3>
+<h3>Maryland Port Administration</h3>
 
 <p>
-
-Links may be provided to
-official Maryland Port Administration
-and Port of Baltimore resources,
-including public terminal information,
-vessel schedules
-and operational updates.
-
+USPPO.com provides links to Maryland Port Administration and Port of Baltimore resources.
 </p>
 
-
-<h3>
-U.S. Coast Guard
-</h3>
+<h3>U.S. Coast Guard</h3>
 
 <p>
-
-Marine safety and navigation links
-may direct visitors to
-U.S. Coast Guard Navigation Center
-resources and Notices to Mariners.
-
+Navigation and marine-safety links direct visitors to U.S. Coast Guard Navigation Center resources.
 </p>
 
-
-<h3>
-OpenStreetMap
-</h3>
+<h3>OpenStreetMap</h3>
 
 <p>
-
-Interactive geographic maps
-use OpenStreetMap map tiles
-through Leaflet.
-
-The map is for general geographic reference only.
-
+The interactive geographic map uses OpenStreetMap data displayed through Leaflet. OpenStreetMap attribution appears directly on the map. The map is not a nautical chart.
 </p>
 
-
-<h3>
-Third-Party AIS
-</h3>
+<h3>AIS</h3>
 
 <p>
-
-Any AIS provider accessed through USPPO.com
-is an independent third party.
-
-AIS information is informational
-and is never a substitute
-for official navigation equipment
-or professional maritime judgment.
-
+AIS vessel-tracking links may direct visitors to independent third-party services. AIS information is not a substitute for appropriate navigation systems or professional maritime judgment.
 </p>
-
 
 </div>
-
 </div>
-
-
-
 
 <!-- ACCESSIBILITY -->
 
-<div
-id="accessibilityModal"
+<div id="accessibilityModal"
 class="modal"
 role="dialog"
 aria-modal="true"
 aria-labelledby="accessibilityTitle">
 
-
 <div class="modal-card">
 
-
-<button
-class="modal-close"
+<button class="modal-close"
 onclick="closeModal('accessibilityModal')"
-aria-label="Close Accessibility Statement">
-
+aria-label="Close">
 <i class="fa-solid fa-xmark"></i>
-
 </button>
 
-
 <h2 id="accessibilityTitle">
-
-Accessibility Statement
-
+Accessibility
 </h2>
 
-
 <p>
-
-USPPO.com aims to provide
-a usable and accessible experience
-for visitors.
-
-The site is designed with
-keyboard-accessible controls,
-high-contrast text,
-responsive layouts,
-descriptive labels
-and scalable content.
-
+USPPO.com is designed to provide a clear, responsive and usable experience across desktop, tablet and mobile devices.
 </p>
 
-
 <p>
-
-If you encounter an accessibility problem,
-please contact:
-
-<strong>
-admin@usppo.com
-</strong>
-
-and identify the page
-or feature involved.
-
+The website uses high-contrast content, responsive layouts, keyboard-accessible controls, descriptive labels and scalable text. Accessibility should continue to be reviewed and improved as the website grows.
 </p>
 
-
 </div>
-
 </div>
-
-
-
 
 <script>
 
-
-/* ==========================================================
-   USPPO.COM LIVE DATA SETTINGS
-========================================================== */
-
+/* ======================================
+   USPPO SETTINGS
+====================================== */
 
 const USPPO = {
 
-    lat:39.216,
+lat:39.216,
+lon:-76.482,
 
-    lon:-76.482,
+/* NOAA Baltimore, Maryland */
+noaaStation:"8574680",
 
-    noaaStation:"8574680"
+/* Refresh live data every 10 minutes */
+refreshMilliseconds:600000
 
 };
 
+/* ======================================
+   CLOCK
+====================================== */
 
+function updateClock(){
 
-/* ==========================================================
-   PORT LOCAL TIME
-========================================================== */
+const now = new Date();
 
+document.getElementById("portTime").textContent =
+new Intl.DateTimeFormat("en-US",{
+timeZone:"America/New_York",
+hour:"numeric",
+minute:"2-digit",
+second:"2-digit"
+}).format(now);
 
-function updatePortClock(){
-
-    const now =
-    new Date();
-
-
-    const time =
-    new Intl.DateTimeFormat(
-        "en-US",
-        {
-            timeZone:"America/New_York",
-            hour:"numeric",
-            minute:"2-digit",
-            second:"2-digit"
-        }
-    ).format(now);
-
-
-    const date =
-    new Intl.DateTimeFormat(
-        "en-US",
-        {
-            timeZone:"America/New_York",
-            weekday:"short",
-            month:"short",
-            day:"numeric",
-            year:"numeric"
-        }
-    ).format(now);
-
-
-    document.getElementById("portTime").textContent =
-    time;
-
-
-    document.getElementById("portDate").textContent =
-    date + " • Eastern Time";
+document.getElementById("portDate").textContent =
+new Intl.DateTimeFormat("en-US",{
+timeZone:"America/New_York",
+weekday:"short",
+month:"short",
+day:"numeric",
+year:"numeric"
+}).format(now) + " • Eastern Time";
 
 }
 
+updateClock();
 
-updatePortClock();
+setInterval(updateClock,1000);
 
-setInterval(
-    updatePortClock,
-    1000
-);
-
-
-
-/* ==========================================================
-   NATIONAL WEATHER SERVICE
-========================================================== */
-
+/* ======================================
+   WEATHER
+====================================== */
 
 async function loadWeather(){
 
-    try{
+try{
 
+const pointResponse =
+await fetch(
+`https://api.weather.gov/points/${USPPO.lat},${USPPO.lon}`,
+{
+headers:{
+"Accept":"application/geo+json"
+}
+}
+);
 
-        const pointURL =
-        `https://api.weather.gov/points/${USPPO.lat},${USPPO.lon}`;
+if(!pointResponse.ok)
+throw new Error("NWS point unavailable");
 
+const pointData =
+await pointResponse.json();
 
-        const pointResponse =
-        await fetch(
-            pointURL,
-            {
-                headers:{
-                    "Accept":"application/geo+json"
-                }
-            }
-        );
+const forecastResponse =
+await fetch(
+pointData.properties.forecast,
+{
+headers:{
+"Accept":"application/geo+json"
+}
+}
+);
 
+if(!forecastResponse.ok)
+throw new Error("NWS forecast unavailable");
 
-        if(!pointResponse.ok){
+const forecastData =
+await forecastResponse.json();
 
-            throw new Error(
-                "NWS point service unavailable"
-            );
+const period =
+forecastData.properties.periods[0];
 
-        }
+document.getElementById("temperature").textContent =
+`${period.temperature}°${period.temperatureUnit}`;
 
+document.getElementById("temperatureNote").textContent =
+`${period.name} • NWS`;
 
-        const pointData =
-        await pointResponse.json();
+document.getElementById("wind").textContent =
+`${period.windSpeed} ${period.windDirection}`;
 
+document.getElementById("forecast").textContent =
+period.shortForecast;
 
-        const forecastURL =
-        pointData.properties.forecast;
+document.getElementById("forecastNote").textContent =
+"National Weather Service";
 
+}catch(error){
 
-        const forecastResponse =
-        await fetch(
-            forecastURL,
-            {
-                headers:{
-                    "Accept":"application/geo+json"
-                }
-            }
-        );
+document.getElementById("temperature").textContent =
+"Unavailable";
 
+document.getElementById("temperatureNote").textContent =
+"Check official NWS source";
 
-        if(!forecastResponse.ok){
+document.getElementById("wind").textContent =
+"Unavailable";
 
-            throw new Error(
-                "NWS forecast unavailable"
-            );
+document.getElementById("forecast").textContent =
+"Unavailable";
 
-        }
-
-
-        const forecastData =
-        await forecastResponse.json();
-
-
-        const period =
-        forecastData.properties.periods[0];
-
-
-        document.getElementById(
-            "temperature"
-        ).textContent =
-        `${period.temperature}°${period.temperatureUnit}`;
-
-
-        document.getElementById(
-            "temperatureNote"
-        ).textContent =
-        period.name + " • NWS";
-
-
-        document.getElementById(
-            "wind"
-        ).textContent =
-        `${period.windSpeed} ${period.windDirection}`;
-
-
-        document.getElementById(
-            "forecast"
-        ).textContent =
-        period.shortForecast;
-
-
-        const updated =
-        new Date(
-            forecastData.properties.updated
-        );
-
-
-        document.getElementById(
-            "forecastNote"
-        ).textContent =
-        "Updated " +
-        updated.toLocaleTimeString(
-            [],
-            {
-                hour:"numeric",
-                minute:"2-digit"
-            }
-        );
-
-
-    }
-
-    catch(error){
-
-
-        document.getElementById(
-            "temperature"
-        ).textContent =
-        "Unavailable";
-
-
-        document.getElementById(
-            "temperatureNote"
-        ).textContent =
-        "Open NWS for current conditions";
-
-
-        document.getElementById(
-            "wind"
-        ).textContent =
-        "Unavailable";
-
-
-        document.getElementById(
-            "forecast"
-        ).textContent =
-        "NWS feed unavailable";
-
-
-        document.getElementById(
-            "forecastNote"
-        ).textContent =
-        "Try again later";
-
-
-    }
+document.getElementById("forecastNote").textContent =
+"Check official NWS source";
 
 }
 
+}
 
+/* ======================================
+   ALERTS
+====================================== */
 
-/* ==========================================================
-   NATIONAL WEATHER SERVICE ALERTS
-========================================================== */
+async function loadAlerts(){
 
+const list =
+document.getElementById("alertList");
 
-async function loadWeatherAlerts(){
+try{
 
-    const alertList =
-    document.getElementById(
-        "alertList"
-    );
+const response =
+await fetch(
+`https://api.weather.gov/alerts/active?point=${USPPO.lat},${USPPO.lon}`,
+{
+headers:{
+"Accept":"application/geo+json"
+}
+}
+);
 
+if(!response.ok)
+throw new Error("Alert feed unavailable");
 
-    try{
+const data =
+await response.json();
 
+const alerts =
+data.features || [];
 
-        const url =
-        `https://api.weather.gov/alerts/active?point=${USPPO.lat},${USPPO.lon}`;
+document.getElementById("alertCount").textContent =
+alerts.length ?
+String(alerts.length) :
+"None";
 
+list.replaceChildren();
 
-        const response =
-        await fetch(
-            url,
-            {
-                headers:{
-                    "Accept":"application/geo+json"
-                }
-            }
-        );
+if(!alerts.length){
 
+const item =
+document.createElement("div");
 
-        if(!response.ok){
+item.className =
+"alert-item";
 
-            throw new Error(
-                "NWS alert service unavailable"
-            );
+const text =
+document.createElement("div");
 
-        }
+text.className =
+"alert-detail";
 
+text.textContent =
+"No active National Weather Service alerts were returned for this location.";
 
-        const data =
-        await response.json();
+item.appendChild(text);
+list.appendChild(item);
 
-
-        const alerts =
-        data.features || [];
-
-
-        document.getElementById(
-            "alertCount"
-        ).textContent =
-        alerts.length === 0
-        ? "None"
-        : String(alerts.length);
-
-
-        alertList.replaceChildren();
-
-
-        if(alerts.length === 0){
-
-
-            const item =
-            document.createElement("div");
-
-
-            item.className =
-            "alert-item";
-
-
-            const detail =
-            document.createElement("div");
-
-
-            detail.className =
-            "alert-detail";
-
-
-            detail.textContent =
-            "No active National Weather Service alerts were returned for this location.";
-
-
-            item.appendChild(detail);
-
-            alertList.appendChild(item);
-
-
-            return;
-
-        }
-
-
-        alerts.slice(0,3).forEach(
-            alert => {
-
-
-                const item =
-                document.createElement("div");
-
-
-                item.className =
-                "alert-item";
-
-
-                const title =
-                document.createElement("div");
-
-
-                title.className =
-                "alert-name";
-
-
-                title.textContent =
-                alert.properties.event ||
-                "Weather Alert";
-
-
-                const detail =
-                document.createElement("div");
-
-
-                detail.className =
-                "alert-detail";
-
-
-                detail.textContent =
-                alert.properties.headline ||
-                "See National Weather Service for complete information.";
-
-
-                item.appendChild(title);
-
-                item.appendChild(detail);
-
-                alertList.appendChild(item);
-
-
-            }
-        );
-
-
-    }
-
-    catch(error){
-
-
-        document.getElementById(
-            "alertCount"
-        ).textContent =
-        "Check NWS";
-
-
-        alertList.replaceChildren();
-
-
-        const item =
-        document.createElement("div");
-
-
-        item.className =
-        "alert-item";
-
-
-        const detail =
-        document.createElement("div");
-
-
-        detail.className =
-        "alert-detail";
-
-
-        detail.textContent =
-        "The NWS alert feed is temporarily unavailable. Use the official NWS link below for current alerts.";
-
-
-        item.appendChild(detail);
-
-        alertList.appendChild(item);
-
-
-    }
+return;
 
 }
 
+alerts.slice(0,5).forEach(alert=>{
 
+const item =
+document.createElement("div");
 
-/* ==========================================================
+item.className =
+"alert-item";
+
+const name =
+document.createElement("div");
+
+name.className =
+"alert-name";
+
+name.textContent =
+alert.properties.event ||
+"Weather Alert";
+
+const detail =
+document.createElement("div");
+
+detail.className =
+"alert-detail";
+
+detail.textContent =
+alert.properties.headline ||
+"See National Weather Service for complete information.";
+
+item.appendChild(name);
+item.appendChild(detail);
+
+list.appendChild(item);
+
+});
+
+}catch(error){
+
+document.getElementById("alertCount").textContent =
+"Unavailable";
+
+list.replaceChildren();
+
+const item =
+document.createElement("div");
+
+item.className =
+"alert-item";
+
+const text =
+document.createElement("div");
+
+text.className =
+"alert-detail";
+
+text.textContent =
+"Live alert information is temporarily unavailable. Please use the official National Weather Service resource.";
+
+item.appendChild(text);
+list.appendChild(item);
+
+}
+
+}
+
+/* ======================================
    NOAA WATER LEVEL
-========================================================== */
+====================================== */
 
+async function loadWater(){
 
-async function loadNOAAWaterLevel(){
+try{
 
-    try{
+const url =
+"https://api.tidesandcurrents.noaa.gov/api/prod/datagetter" +
+"?date=latest" +
+"&station=" + USPPO.noaaStation +
+"&product=water_level" +
+"&datum=MLLW" +
+"&time_zone=lst_ldt" +
+"&units=english" +
+"&format=json" +
+"&application=USPPO.com";
 
+const response =
+await fetch(url);
 
-        const url =
-        "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter" +
-        "?date=latest" +
-        "&station=" +
-        USPPO.noaaStation +
-        "&product=water_level" +
-        "&datum=MLLW" +
-        "&time_zone=lst_ldt" +
-        "&units=english" +
-        "&format=json" +
-        "&application=USPPO.com";
+if(!response.ok)
+throw new Error("NOAA unavailable");
 
+const data =
+await response.json();
 
-        const response =
-        await fetch(url);
+if(!data.data ||
+!data.data.length)
+throw new Error("No NOAA observation");
 
+const observation =
+data.data[0];
 
-        if(!response.ok){
+document.getElementById("waterLevel").textContent =
+observation.v + " ft";
 
-            throw new Error(
-                "NOAA water level unavailable"
-            );
+document.getElementById("waterLevelNote").textContent =
+"MLLW • NOAA • " + observation.t;
 
-        }
+}catch(error){
 
+document.getElementById("waterLevel").textContent =
+"Unavailable";
 
-        const data =
-        await response.json();
-
-
-        if(
-            !data.data ||
-            !data.data.length
-        ){
-
-            throw new Error(
-                "No current water level returned"
-            );
-
-        }
-
-
-        const observation =
-        data.data[0];
-
-
-        document.getElementById(
-            "waterLevel"
-        ).textContent =
-        observation.v + " ft";
-
-
-        document.getElementById(
-            "waterLevelNote"
-        ).textContent =
-        "MLLW • NOAA " +
-        observation.t;
-
-
-    }
-
-    catch(error){
-
-
-        document.getElementById(
-            "waterLevel"
-        ).textContent =
-        "Check NOAA";
-
-
-        document.getElementById(
-            "waterLevelNote"
-        ).textContent =
-        "Station 8574680";
-
-
-    }
+document.getElementById("waterLevelNote").textContent =
+"Check NOAA Baltimore Station 8574680";
 
 }
 
+}
 
+/* ======================================
+   NOAA TIDES
+====================================== */
 
-/* ==========================================================
-   NOAA NEXT HIGH / LOW TIDE
-========================================================== */
+async function loadTides(){
 
+try{
 
-async function loadNOAATides(){
+/*
+Request today's and tomorrow's high/low
+predictions so the next tide still works
+late in the day.
+*/
 
-    try{
+const begin =
+new Date();
 
+const end =
+new Date();
 
-        const url =
-        "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter" +
-        "?date=today" +
-        "&station=" +
-        USPPO.noaaStation +
-        "&product=predictions" +
-        "&datum=MLLW" +
-        "&time_zone=lst_ldt" +
-        "&interval=hilo" +
-        "&units=english" +
-        "&format=json" +
-        "&application=USPPO.com";
+end.setDate(end.getDate()+1);
 
+function ymd(date){
 
-        const response =
-        await fetch(url);
+const year =
+date.getFullYear();
 
+const month =
+String(date.getMonth()+1)
+.padStart(2,"0");
 
-        if(!response.ok){
+const day =
+String(date.getDate())
+.padStart(2,"0");
 
-            throw new Error(
-                "NOAA tide predictions unavailable"
-            );
-
-        }
-
-
-        const data =
-        await response.json();
-
-
-        const predictions =
-        data.predictions || [];
-
-
-        if(!predictions.length){
-
-            throw new Error(
-                "No tide predictions returned"
-            );
-
-        }
-
-
-        const now =
-        new Date();
-
-
-        let next =
-        null;
-
-
-        for(
-            const prediction
-            of predictions
-        ){
-
-
-            const date =
-            new Date(
-                prediction.t.replace(
-                    " ",
-                    "T"
-                )
-            );
-
-
-            if(date > now){
-
-                next =
-                prediction;
-
-                break;
-
-            }
-
-
-        }
-
-
-        if(!next){
-
-            next =
-            predictions[
-                predictions.length - 1
-            ];
-
-        }
-
-
-        const type =
-        next.type === "H"
-        ? "High"
-        : "Low";
-
-
-        const timePart =
-        next.t.split(" ")[1] || "";
-
-
-        document.getElementById(
-            "nextTide"
-        ).textContent =
-        type + " " +
-        next.v +
-        " ft";
-
-
-        document.getElementById(
-            "nextTideNote"
-        ).textContent =
-        timePart +
-        " • NOAA Prediction";
-
-
-    }
-
-    catch(error){
-
-
-        document.getElementById(
-            "nextTide"
-        ).textContent =
-        "Check NOAA";
-
-
-        document.getElementById(
-            "nextTideNote"
-        ).textContent =
-        "Station 8574680";
-
-
-    }
+return `${year}${month}${day}`;
 
 }
 
+const url =
+"https://api.tidesandcurrents.noaa.gov/api/prod/datagetter" +
+"?begin_date=" + ymd(begin) +
+"&end_date=" + ymd(end) +
+"&station=" + USPPO.noaaStation +
+"&product=predictions" +
+"&datum=MLLW" +
+"&time_zone=lst_ldt" +
+"&interval=hilo" +
+"&units=english" +
+"&format=json" +
+"&application=USPPO.com";
 
+const response =
+await fetch(url);
 
-/* ==========================================================
-   DASHBOARD UPDATE TIME
-========================================================== */
+if(!response.ok)
+throw new Error("NOAA predictions unavailable");
 
+const data =
+await response.json();
 
-function setDashboardUpdateTime(){
+const predictions =
+data.predictions || [];
 
+if(!predictions.length)
+throw new Error("No tide predictions");
 
-    const now =
-    new Date();
+const now =
+new Date();
 
+let next = null;
 
-    document.getElementById(
-        "dashboardUpdated"
-    ).textContent =
-    now.toLocaleTimeString(
-        [],
-        {
-            hour:"numeric",
-            minute:"2-digit"
-        }
-    );
+for(const prediction of predictions){
 
-}
+const date =
+new Date(
+prediction.t.replace(" ","T")
+);
 
+if(date > now){
 
-
-/* ==========================================================
-   INTERACTIVE PORT MAP
-========================================================== */
-
-
-function initializeMap(){
-
-
-    if(
-        typeof L === "undefined"
-    ){
-
-        return;
-
-    }
-
-
-    const map =
-    L.map(
-        "portMap",
-        {
-            scrollWheelZoom:false
-        }
-    ).setView(
-        [
-            39.22,
-            -76.52
-        ],
-        11
-    );
-
-
-    L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-            maxZoom:19,
-
-            attribution:
-            "&copy; OpenStreetMap contributors"
-        }
-    ).addTo(map);
-
-
-
-    L.marker(
-        [
-            39.216,
-            -76.482
-        ]
-    )
-    .addTo(map)
-    .bindPopup(
-        "<strong>Sparrows Point</strong><br>" +
-        "USPPO maritime & logistics area.<br><br>" +
-        "General geographic reference only."
-    );
-
-
-
-    L.marker(
-        [
-            39.26667,
-            -76.57833
-        ]
-    )
-    .addTo(map)
-    .bindPopup(
-        "<strong>NOAA Station 8574680</strong><br>" +
-        "Baltimore / Fort McHenry, Patapsco River.<br>" +
-        "NOAA tide and water-level reference station."
-    );
-
-
-
-    L.marker(
-        [
-            39.275,
-            -76.59
-        ]
-    )
-    .addTo(map)
-    .bindPopup(
-        "<strong>Baltimore Harbor</strong><br>" +
-        "Greater Port of Baltimore harbor area."
-    );
-
+next = prediction;
+break;
 
 }
 
+}
 
+if(!next)
+throw new Error("No upcoming prediction");
 
-/* ==========================================================
-   UNIT CONVERTER
-========================================================== */
+const type =
+next.type === "H" ?
+"High" :
+"Low";
 
+const dateObject =
+new Date(
+next.t.replace(" ","T")
+);
+
+const time =
+dateObject.toLocaleTimeString(
+"en-US",
+{
+hour:"numeric",
+minute:"2-digit"
+}
+);
+
+document.getElementById("nextTide").textContent =
+`${type} ${next.v} ft`;
+
+document.getElementById("nextTideNote").textContent =
+`${time} • NOAA Prediction`;
+
+}catch(error){
+
+document.getElementById("nextTide").textContent =
+"Unavailable";
+
+document.getElementById("nextTideNote").textContent =
+"Check NOAA Baltimore Station 8574680";
+
+}
+
+}
+
+/* ======================================
+   MAP
+====================================== */
+
+function initMap(){
+
+if(typeof L === "undefined")
+return;
+
+const map =
+L.map(
+"portMap",
+{
+scrollWheelZoom:false
+}
+).setView(
+[39.22,-76.52],
+11
+);
+
+L.tileLayer(
+"https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+{
+maxZoom:19,
+attribution:
+'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a>'
+}
+).addTo(map);
+
+L.marker([39.216,-76.482])
+.addTo(map)
+.bindPopup(
+"<strong>Sparrows Point</strong><br>" +
+"USPPO.com primary information area.<br><br>" +
+"General geographic reference only."
+);
+
+L.marker([39.26667,-76.57833])
+.addTo(map)
+.bindPopup(
+"<strong>NOAA Baltimore Station Area</strong><br>" +
+"NOAA Station 8574680.<br><br>" +
+"General geographic reference only."
+);
+
+L.marker([39.275,-76.59])
+.addTo(map)
+.bindPopup(
+"<strong>Baltimore Harbor</strong><br>" +
+"Greater Baltimore maritime area."
+);
+
+}
+
+/* ======================================
+   CONVERTER
+====================================== */
 
 function convertUnit(){
 
+const value =
+parseFloat(
+document.getElementById(
+"converterValue"
+).value
+);
 
-    const value =
-    parseFloat(
-        document.getElementById(
-            "converterValue"
-        ).value
-    );
+const type =
+document.getElementById(
+"converterType"
+).value;
 
+const result =
+document.getElementById(
+"converterResult"
+);
 
-    const type =
-    document.getElementById(
-        "converterType"
-    ).value;
+if(Number.isNaN(value)){
 
+result.textContent =
+"Please enter a number.";
 
-    const result =
-    document.getElementById(
-        "converterResult"
-    );
-
-
-    if(
-        Number.isNaN(value)
-    ){
-
-        result.textContent =
-        "Please enter a number.";
-
-        return;
-
-    }
-
-
-    let answer = "";
-
-
-    switch(type){
-
-
-        case "knotsMph":
-
-            answer =
-            `${value} knots = ${(value * 1.15078).toFixed(2)} mph`;
-
-            break;
-
-
-        case "mphKnots":
-
-            answer =
-            `${value} mph = ${(value / 1.15078).toFixed(2)} knots`;
-
-            break;
-
-
-        case "nmMiles":
-
-            answer =
-            `${value} nautical miles = ${(value * 1.15078).toFixed(2)} miles`;
-
-            break;
-
-
-        case "milesNm":
-
-            answer =
-            `${value} miles = ${(value / 1.15078).toFixed(2)} nautical miles`;
-
-            break;
-
-
-        case "kgLb":
-
-            answer =
-            `${value} kg = ${(value * 2.20462).toFixed(2)} lb`;
-
-            break;
-
-
-        case "lbKg":
-
-            answer =
-            `${value} lb = ${(value / 2.20462).toFixed(2)} kg`;
-
-            break;
-
-
-        case "mtLb":
-
-            answer =
-            `${value} metric tons = ${(value * 2204.62262).toLocaleString(undefined,{maximumFractionDigits:2})} lb`;
-
-            break;
-
-
-        case "cF":
-
-            answer =
-            `${value}°C = ${((value * 9/5) + 32).toFixed(1)}°F`;
-
-            break;
-
-
-        case "fC":
-
-            answer =
-            `${value}°F = ${((value - 32) * 5/9).toFixed(1)}°C`;
-
-            break;
-
-
-    }
-
-
-    result.textContent =
-    answer;
+return;
 
 }
 
+let answer="";
 
+switch(type){
 
-/* ==========================================================
+case "knotsMph":
+
+answer =
+`${value} knots = ${(value*1.15078).toFixed(2)} mph`;
+
+break;
+
+case "mphKnots":
+
+answer =
+`${value} mph = ${(value/1.15078).toFixed(2)} knots`;
+
+break;
+
+case "nmMiles":
+
+answer =
+`${value} nautical miles = ${(value*1.15078).toFixed(2)} miles`;
+
+break;
+
+case "milesNm":
+
+answer =
+`${value} miles = ${(value/1.15078).toFixed(2)} nautical miles`;
+
+break;
+
+case "kgLb":
+
+answer =
+`${value} kg = ${(value*2.20462).toFixed(2)} lb`;
+
+break;
+
+case "lbKg":
+
+answer =
+`${value} lb = ${(value/2.20462).toFixed(2)} kg`;
+
+break;
+
+case "mtLb":
+
+answer =
+`${value} metric tons = ${(value*2204.62262).toLocaleString(undefined,{
+maximumFractionDigits:2
+})} lb`;
+
+break;
+
+case "cF":
+
+answer =
+`${value}°C = ${((value*9/5)+32).toFixed(1)}°F`;
+
+break;
+
+case "fC":
+
+answer =
+`${value}°F = ${((value-32)*5/9).toFixed(1)}°C`;
+
+break;
+
+}
+
+result.textContent =
+answer;
+
+}
+
+/* ======================================
    MODALS
-========================================================== */
-
+====================================== */
 
 function openModal(id){
 
+document.getElementById(id)
+.classList.add("open");
 
-    const modal =
-    document.getElementById(id);
-
-
-    modal.classList.add(
-        "open"
-    );
-
-
-    document.body.style.overflow =
-    "hidden";
+document.body.style.overflow =
+"hidden";
 
 }
-
-
 
 function closeModal(id){
 
+document.getElementById(id)
+.classList.remove("open");
 
-    const modal =
-    document.getElementById(id);
-
-
-    modal.classList.remove(
-        "open"
-    );
-
-
-    document.body.style.overflow =
-    "";
+document.body.style.overflow =
+"";
 
 }
-
-
 
 document.addEventListener(
-    "keydown",
-    event => {
+"keydown",
+event=>{
 
+if(event.key==="Escape"){
 
-        if(
-            event.key === "Escape"
-        ){
-
-
-            document
-            .querySelectorAll(
-                ".modal.open"
-            )
-            .forEach(
-                modal =>
-                modal.classList.remove(
-                    "open"
-                )
-            );
-
-
-            document.body.style.overflow =
-            "";
-
-
-        }
-
-
-    }
+document.querySelectorAll(
+".modal.open"
+).forEach(
+modal=>
+modal.classList.remove("open")
 );
 
-
-
-document
-.querySelectorAll(
-    ".modal"
-)
-.forEach(
-    modal => {
-
-
-        modal.addEventListener(
-            "click",
-            event => {
-
-
-                if(
-                    event.target === modal
-                ){
-
-
-                    modal.classList.remove(
-                        "open"
-                    );
-
-
-                    document.body.style.overflow =
-                    "";
-
-
-                }
-
-
-            }
-        );
-
-
-    }
-);
-
-
-
-/* ==========================================================
-   INITIALIZE USPPO.COM
-========================================================== */
-
-
-async function initializeUSPPO(){
-
-
-    setDashboardUpdateTime();
-
-
-    initializeMap();
-
-
-    await Promise.allSettled(
-        [
-
-            loadWeather(),
-
-            loadWeatherAlerts(),
-
-            loadNOAAWaterLevel(),
-
-            loadNOAATides()
-
-        ]
-    );
-
-
-    setDashboardUpdateTime();
+document.body.style.overflow =
+"";
 
 }
 
+}
+);
+
+document.querySelectorAll(
+".modal"
+).forEach(
+modal=>{
+
+modal.addEventListener(
+"click",
+event=>{
+
+if(event.target===modal){
+
+modal.classList.remove("open");
+
+document.body.style.overflow="";
+
+}
+
+}
+);
+
+}
+);
+
+/* ======================================
+   LIVE DATA REFRESH
+====================================== */
+
+function setUpdatedTime(){
+
+document.getElementById(
+"dashboardUpdated"
+).textContent =
+new Intl.DateTimeFormat(
+"en-US",
+{
+timeZone:"America/New_York",
+hour:"numeric",
+minute:"2-digit"
+}
+).format(new Date());
+
+}
+
+async function refreshLiveData(){
+
+await Promise.allSettled([
+loadWeather(),
+loadAlerts(),
+loadWater(),
+loadTides()
+]);
+
+setUpdatedTime();
+
+}
+
+/* ======================================
+   INITIALIZE USPPO
+====================================== */
+
+function initializeUSPPO(){
+
+initMap();
+
+refreshLiveData();
+
+/*
+Automatically request fresh live data
+every 10 minutes while page is open.
+*/
+
+setInterval(
+refreshLiveData,
+USPPO.refreshMilliseconds
+);
+
+}
 
 initializeUSPPO();
 
-
 </script>
-
 
 </body>
 </html>
