@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USPPO.com | Sparrows Point Port Tracking & Logistics Directory</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Leaflet CSS & JS for Interactive Map Fallback -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        .nautical-bg { background-color: #0A192F; }
+        .nautical-card { background-color: #112240; }
+        .accent-amber { color: #F59E0B; }
+        .bg-accent-amber { background-color: #F59E0B; }
+        #map-container { height: 450px; width: 100%; border-radius: 0.5rem; }
+    </style>
+</head>
+<body class="bg-gray-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="nautical-bg border-b border-slate-800 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid font-bold fa-anchor text-amber-500 text-2xl"></i>
+                <div>
+                    <h1 class="text-xl font-bold tracking-wider text-white">USPPO<span class="text-amber-500">.com</span></h1>
+                    <p class="text-xs text-slate-400">UN/LOCODE: USPPO — Sparrows Point, MD Logistics Gateway</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4 mt-2 sm:mt-0 text-xs sm:text-sm">
+                <div class="bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 flex items-center space-x-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span class="text-slate-300">Port Status: <strong class="text-emerald-400">OPEN / NORMAL</strong></span>
+                </div>
+                <button onclick="openModal('rfqModal')" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-1.5 rounded transition shadow">
+                    Request Drayage Quote
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto px-4 py-6 space-y-8 flex-grow w-full">
+
+        <!-- HERO SECTION: MAP & LIVE TELEMETRY -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- AIS Map Column (2/3 width) -->
+            <div class="lg:col-span-2 nautical-card p-4 rounded-lg border border-slate-800 shadow-md">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 class="text-lg font-semibold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-satellite-dish text-amber-500"></i>
+                        Live AIS Port Telemetry — Sparrows Point
+                    </h2>
+                    <span class="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded">39.2158° N, 76.4816° W</span>
+                </div>
+                
+                <!-- Live VesselFinder Embed iFrame (Option A) -->
+                <div class="overflow-hidden rounded border border-slate-700 shadow-inner">
+                    <iframe 
+                        id="vf-embed"
+                        src="https://www.vesselfinder.com/aismap?zoom=13&lat=39.2158&lon=-76.4816&width=100%25&height=400&names=true&mmsi=0&track=0&fleet=false&fleet_name=false&fleet_timespan=12&clicktoact=false&store_pos=true" 
+                        width="100%" 
+                        height="400" 
+                        frameborder="0" 
+                        scrolling="no"
+                        class="w-full">
+                    </iframe>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-2 text-right">
+                    *AIS tracking provided via third-party AIS stream for general informational purposes.
+                </p>
+            </div>
+
+            <!-- Quick Port Stats & Weather Panel (1/3 width) -->
+            <div class="space-y-4">
+                <!-- Weather / Conditions Card -->
+                <div class="nautical-card p-4 rounded-lg border border-slate-800">
+                    <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-cloud-sun text-amber-500"></i> Sparrows Point Conditions
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3 text-center">
+                        <div class="bg-slate-900/60 p-2.5 rounded border border-slate-800">
+                            <span class="text-xs text-slate-400 block">Wind (Patapsco)</span>
+                            <span class="text-base font-bold text-white">8 kts SSE</span>
+                        </div>
+                        <div class="bg-slate-900/60 p-2.5 rounded border border-slate-800">
+                            <span class="text-xs text-slate-400 block">Tide Height</span>
+                            <span class="text-base font-bold text-white">+1.2 ft (High 14:20)</span>
+                        </div>
+                        <div class="bg-slate-900/60 p-2.5 rounded border border-slate-800">
+                            <span class="text-xs text-slate-400 block">Visibility</span>
+                            <span class="text-base font-bold text-emerald-400">10 NM</span>
+                        </div>
+                        <div class="bg-slate-900/60 p-2.5 rounded border border-slate-800">
+                            <span class="text-xs text-slate-400 block">Air Temp</span>
+                            <span class="text-base font-bold text-white">68° F</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Free Business Listing CTA -->
+                <div class="bg-gradient-to-br from-amber-500/10 to-slate-900 p-4 rounded-lg border border-amber-500/30">
+                    <h3 class="text-base font-bold text-amber-400 mb-1">Maryland Logistics Provider?</h3>
+                    <p class="text-xs text-slate-300 mb-3">Add your drayage trucking, cold storage, or customs service to the USPPO directory for free.</p>
+                    <button onclick="openModal('vendorModal')" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/40 text-xs font-bold py-2 rounded transition">
+                        + Add Free Business Listing
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXPECTED VESSEL ROSTER -->
+        <section class="nautical-card p-5 rounded-lg border border-slate-800 shadow-md">
+            <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-2">
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-ship text-amber-500"></i>
+                        Commercial Ships at Berth & Inbound (USPPO)
+                    </h2>
+                    <p class="text-xs text-slate-400">Real-time schedule for Tradepoint Atlantic & Sparrows Point terminals.</p>
+                </div>
+                <input type="text" id="vesselSearch" onkeyup="filterVessels()" placeholder="Search vessel, IMO, or flag..." class="bg-slate-900 border border-slate-700 rounded text-xs px-3 py-1.5 focus:outline-none focus:border-amber-500 text-slate-200">
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs text-slate-300" id="vesselTable">
+                    <thead class="bg-slate-900 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
+                        <tr>
+                            <th class="p-3">Vessel Name</th>
+                            <th class="p-3">Type</th>
+                            <th class="p-3">Flag</th>
+                            <th class="p-3">IMO / MMSI</th>
+                            <th class="p-3">Status</th>
+                            <th class="p-3">ETA / Berth</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60">
+                        <tr class="hover:bg-slate-800/40 transition">
+                            <td class="p-3 font-semibold text-white">MSC SHANTOU</td>
+                            <td class="p-3">Container Ship</td>
+                            <td class="p-3">Liberia 🇱🇷</td>
+                            <td class="p-3 text-slate-400">9708681</td>
+                            <td class="p-3"><span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px]">At Berth 2</span></td>
+                            <td class="p-3">Departing 18:00</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40 transition">
+                            <td class="p-3 font-semibold text-white">BALTIMORE HIGHWAY</td>
+                            <td class="p-3">Ro-Ro Vehicle Carrier</td>
+                            <td class="p-3">Japan 🇯🇵</td>
+                            <td class="p-3 text-slate-400">9728083</td>
+                            <td class="p-3"><span class="bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded text-[10px]">Inbound / Approach</span></td>
+                            <td class="p-3">ETA Today 16:30</td>
+                        </tr>
+                        <tr class="hover:bg-slate-800/40 transition">
+                            <td class="p-3 font-semibold text-white">EAGLE BALTIMORE</td>
+                            <td class="p-3">Bulk Carrier</td>
+                            <td class="p-3">Panama 🇵🇦</td>
+                            <td class="p-3 text-slate-400">9621120</td>
+                            <td class="p-3"><span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px]">At Berth 4</span></td>
+                            <td class="p-3">Discharging Cargo</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- FREE B2B LOGISTICS DIRECTORY -->
+        <section class="space-y-4">
+            <div class="flex justify-between items-end border-b border-slate-800 pb-2">
+                <div>
+                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-truck-fast text-amber-500"></i>
+                        Sparrows Point Local Logistics Directory
+                    </h2>
+                    <p class="text-xs text-slate-400">Verified drayage, warehousing, and customs providers serving USPPO.</p>
+                </div>
+                <button onclick="openModal('vendorModal')" class="text-xs text-amber-400 hover:underline">
+                    + Register Your Company
+                </button>
+            </div>
+
+            <!-- Vendor Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="vendorGrid">
+                <!-- Sample Vendor Card 1 -->
+                <div class="nautical-card p-4 rounded-lg border border-slate-800 space-y-2">
+                    <div class="flex justify-between items-start">
+                        <h3 class="font-bold text-white text-sm">Chesapeake Drayage Express</h3>
+                        <span class="bg-slate-800 text-amber-400 text-[10px] px-2 py-0.5 rounded border border-slate-700">Drayage / Trucking</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Direct container haulage from Sparrows Point terminals to regional rail ramps and interstate 95.</p>
+                    <div class="text-xs text-slate-300 pt-2 border-t border-slate-800/80 flex justify-between items-center">
+                        <span><i class="fa-solid fa-phone text-slate-500 mr-1"></i> (410) 555-0192</span>
+                        <a href="mailto:dispatch@example.com" class="text-amber-400 hover:underline">Contact Dispatch</a>
+                    </div>
+                </div>
+
+                <!-- Sample Vendor Card 2 -->
+                <div class="nautical-card p-4 rounded-lg border border-slate-800 space-y-2">
+                    <div class="flex justify-between items-start">
+                        <h3 class="font-bold text-white text-sm">Tradepoint Cold Logistics</h3>
+                        <span class="bg-slate-800 text-emerald-400 text-[10px] px-2 py-0.5 rounded border border-slate-700">Cold Storage</span>
+                    </div>
+                    <p class="text-xs text-slate-400">200,000 sq ft temperature-controlled warehouse facility within 2 miles of USPPO dock facilities.</p>
+                    <div class="text-xs text-slate-300 pt-2 border-t border-slate-800/80 flex justify-between items-center">
+                        <span><i class="fa-solid fa-phone text-slate-500 mr-1"></i> (410) 555-0144</span>
+                        <a href="mailto:info@example.com" class="text-amber-400 hover:underline">Request Space</a>
+                    </div>
+                </div>
+
+                <!-- Sample Vendor Card 3 -->
+                <div class="nautical-card p-4 rounded-lg border border-slate-800 space-y-2">
+                    <div class="flex justify-between items-start">
+                        <h3 class="font-bold text-white text-sm">Mid-Atlantic Customs Brokers</h3>
+                        <span class="bg-slate-800 text-blue-400 text-[10px] px-2 py-0.5 rounded border border-slate-700">Customs Clearance</span>
+                    </div>
+                    <p class="text-xs text-slate-400">Fast-track US Customs entry clearance, ISF filing, and bond services for Baltimore port arrivals.</p>
+                    <div class="text-xs text-slate-300 pt-2 border-t border-slate-800/80 flex justify-between items-center">
+                        <span><i class="fa-solid fa-phone text-slate-500 mr-1"></i> (410) 555-0881</span>
+                        <a href="mailto:docs@example.com" class="text-amber-400 hover:underline">Submit Docs</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER WITH LEGAL DISCLAIMERS -->
+    <footer class="nautical-bg border-t border-slate-800 mt-12 py-8 text-slate-400 text-xs">
+        <div class="max-w-7xl mx-auto px-4 space-y-6">
+            
+            <!-- MANDATORY LEGAL DISCLAIMER NOTICE -->
+            <div class="bg-slate-900/90 p-4 rounded border border-slate-800/80 space-y-2 text-[11px] leading-relaxed text-slate-400">
+                <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] flex items-center gap-1.5">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> 
+                    Legal Notice & Operational Disclaimer
+                </p>
+                <p>
+                    <strong>NOT FOR NAVIGATION OR SAFETY OF LIFE:</strong> Telemetry, AIS vessel tracking positions, wind/weather reports, and schedule data presented on USPPO.com are aggregated from third-party public broadcasts for commercial logistics planning only. This platform is <strong>NOT</strong> intended for maritime navigation, collision avoidance, or safety-of-life decisions. Vessel officers must rely solely on official bridge navigation instruments and official harbor pilots.
+                </p>
+                <p>
+                    <strong>3RD-PARTY AGGREGATOR NOTICE:</strong> USPPO.com operates as an independent informational portal. All data is provided on an "AS-IS" basis without warranties of accuracy or timeliness. USPPO.com assumes no liability for freight delays, gate closures, or third-party vendor performance.
+                </p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row justify-between items-center pt-4 border-t border-slate-800 gap-3">
+                <p>© 2026 USPPO.com — Independent Port Information Gateway for UN/LOCODE: USPPO (Sparrows Point, MD).</p>
+                <div class="flex space-x-4">
+                    <button onclick="openModal('disclaimerModal')" class="hover:text-amber-400 underline">Terms of Use & Privacy</button>
+                    <span>|</span>
+                    <a href="mailto:admin@usppo.com" class="hover:text-amber-400">Contact Webmaster</a>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- MODAL 1: DRAYAGE RFQ DISPATCH FORM -->
+    <div id="rfqModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="nautical-card border border-slate-700 rounded-lg max-w-lg w-full p-6 space-y-4 shadow-2xl relative">
+            <button onclick="closeModal('rfqModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-paper-plane text-amber-500"></i> Dispatch Drayage / Cargo RFQ
+            </h3>
+            <p class="text-xs text-slate-400">Submit your cargo specifications. Requests are routed to local Sparrows Point carriers.</p>
+            
+            <form onsubmit="handleRfqSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-slate-300 mb-1">Company / Freight Broker Name</label>
+                    <input type="text" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-300 mb-1">Contact Email</label>
+                        <input type="email" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500">
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 mb-1">Phone Number</label>
+                        <input type="tel" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">Cargo / Container Specifications</label>
+                    <textarea rows="3" required placeholder="e.g., 2x 40ft HC containers from Tradepoint Berth 2 to Jessup, MD..." class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500"></textarea>
+                </div>
+                
+                <!-- Mandatory Disclaimer Checkbox -->
+                <div class="flex items-start gap-2 pt-2">
+                    <input type="checkbox" id="rfqConsent" required class="mt-0.5 accent-amber-500">
+                    <label for="rfqConsent" class="text-[11px] text-slate-400 leading-tight">
+                        I understand that USPPO.com is an informational directory and agree that quote submissions do not establish a binding contract until confirmed directly by a vendor.
+                    </label>
+                </div>
+
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded transition">
+                    Dispatch Free Quote Request
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: ADD FREE VENDOR LISTING FORM -->
+    <div id="vendorModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="nautical-card border border-slate-700 rounded-lg max-w-lg w-full p-6 space-y-4 shadow-2xl relative">
+            <button onclick="closeModal('vendorModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                <i class="fa-solid fa-building text-amber-500"></i> Free Vendor Registration
+            </h3>
+            <p class="text-xs text-slate-400">Get your Maryland logistics business listed in front of freight brokers and port managers.</p>
+            
+            <form onsubmit="handleVendorSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block text-slate-300 mb-1">Business Name</label>
+                    <input type="text" id="vName" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-slate-300 mb-1">Service Category</label>
+                        <select id="vCategory" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500">
+                            <option>Drayage / Trucking</option>
+                            <option>Warehousing & Storage</option>
+                            <option>Cold Storage</option>
+                            <option>Customs Brokerage</option>
+                            <option>Chassis & Repair</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-slate-300 mb-1">Dispatch Phone</label>
+                        <input type="text" id="vPhone" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-slate-300 mb-1">Short Description of Services</label>
+                    <textarea id="vDesc" rows="2" required placeholder="Briefly describe your fleet, warehouse square footage, or specialty..." class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2.5 rounded transition">
+                    Publish Free Profile
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 3: FULL TERMS & DISCLAIMER WINDOW -->
+    <div id="disclaimerModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="nautical-card border border-slate-700 rounded-lg max-w-2xl w-full p-6 space-y-4 shadow-2xl relative max-h-[80vh] overflow-y-auto">
+            <button onclick="closeModal('disclaimerModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            <h3 class="text-lg font-bold text-white">USPPO.com Terms of Service & Privacy Statement</h3>
+            <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
+                <p><strong>1. Informational Purpose Only:</strong> All content, telemetry, map representations, and vendor listings provided on USPPO.com are for public informational use. USPPO.com is not affiliated with the Maryland Port Administration or Tradepoint Atlantic unless explicitly stated.</p>
+                <p><strong>2. No Maritime Navigation Usage:</strong> Data provided on this site must not be relied upon for vessel piloting, navigation, docking, or safety-of-life decisions.</p>
+                <p><strong>3. Limitation of Liability:</strong> Under no circumstances shall USPPO.com, its operators, or owners be held liable for commercial losses, demurrage charges, freight delays, or accidents resulting from data provided on this platform.</p>
+            </div>
+            <button onclick="closeModal('disclaimerModal')" class="w-full bg-slate-800 text-slate-200 text-xs font-bold py-2 rounded">Close Window</button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // Modal Handlers
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+        }
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+        }
+
+        // Live Table Search Filter
+        function filterVessels() {
+            const input = document.getElementById('vesselSearch').value.toUpperCase();
+            const tr = document.getElementById('vesselTable').getElementsByTagName('tr');
+            for (let i = 1; i < tr.length; i++) {
+                let text = tr[i].textContent || tr[i].innerText;
+                tr[i].style.display = text.toUpperCase().indexOf(input) > -1 ? "" : "none";
+            }
+        }
+
+        // Handle RFQ Form Submission
+        function handleRfqSubmit(e) {
+            e.preventDefault();
+            alert("Thank you! Your freight request has been broadcast to participating Sparrows Point logistics providers.");
+            closeModal('rfqModal');
+        }
+
+        // Handle Adding Free Vendor to Directory
+        function handleVendorSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('vName').value;
+            const category = document.getElementById('vCategory').value;
+            const phone = document.getElementById('vPhone').value;
+            const desc = document.getElementById('vDesc').value;
+
+            const grid = document.getElementById('vendorGrid');
+            const newCard = document.createElement('div');
+            newCard.className = "nautical-card p-4 rounded-lg border border-amber-500/40 space-y-2";
+            newCard.innerHTML = `
+                <div class="flex justify-between items-start">
+                    <h3 class="font-bold text-white text-sm">${name}</h3>
+                    <span class="bg-slate-800 text-amber-400 text-[10px] px-2 py-0.5 rounded border border-slate-700">${category}</span>
+                </div>
+                <p class="text-xs text-slate-400">${desc}</p>
+                <div class="text-xs text-slate-300 pt-2 border-t border-slate-800/80 flex justify-between items-center">
+                    <span><i class="fa-solid fa-phone text-slate-500 mr-1"></i> ${phone}</span>
+                    <span class="text-emerald-400 text-[10px]">Newly Listed</span>
+                </div>
+            `;
+            grid.prepend(newCard);
+            alert("Success! Your free business listing is now active on USPPO.com.");
+            closeModal('vendorModal');
+        }
+    </script>
+</body>
+</html>
