@@ -1,417 +1,1367 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USPPO.com | Sparrows Point Port Tracking & Logistics Directory</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Leaflet CSS & JS for Interactive Map Fallback -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        .nautical-bg { background-color: #0A192F; }
-        .nautical-card { background-color: #112240; }
-        .accent-amber { color: #F59E0B; }
-        .bg-accent-amber { background-color: #F59E0B; }
-        #map-container { height: 450px; width: 100%; border-radius: 0.5rem; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>USPPO.com | Sparrows Point Maritime & Logistics Gateway</title>
+
+  <meta name="description" content="USPPO.com is an independent maritime and logistics information gateway for Sparrows Point, Maryland. Weather, tides, marine resources, logistics directory and port information.">
+
+  <meta name="keywords" content="USPPO, Sparrows Point, Maryland, Port of Baltimore, logistics, maritime, trucking, drayage, warehouse, customs, tides, weather">
+
+  <meta name="robots" content="index, follow">
+
+  <meta name="theme-color" content="#071827">
+
+  <meta property="og:title" content="USPPO.com | Sparrows Point Maritime & Logistics Gateway">
+  <meta property="og:description" content="Independent maritime, logistics and port information for Sparrows Point, Maryland.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://usppo.com/">
+
+  <link rel="canonical" href="https://usppo.com/">
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    :root {
+      --navy:#071827;
+      --navy2:#0b2438;
+      --navy3:#10334e;
+      --steel:#6f8798;
+      --blue:#1d80b5;
+      --cyan:#5cc8e8;
+      --amber:#f3a51d;
+      --white:#f6f9fb;
+    }
+
+    html {
+      scroll-behavior:smooth;
+    }
+
+    body {
+      margin:0;
+      background:
+        radial-gradient(circle at 80% 0%, rgba(29,128,181,.18), transparent 30%),
+        linear-gradient(180deg,#061521 0%,#091d2d 45%,#061521 100%);
+      color:#e7eef3;
+      font-family:Arial,Helvetica,sans-serif;
+    }
+
+    .glass {
+      background:rgba(11,36,56,.88);
+      border:1px solid rgba(111,135,152,.25);
+      box-shadow:0 12px 35px rgba(0,0,0,.25);
+      backdrop-filter:blur(10px);
+    }
+
+    .hero {
+      position:relative;
+      overflow:hidden;
+      background:
+        linear-gradient(90deg,rgba(3,18,29,.98),rgba(4,30,48,.90),rgba(5,34,54,.75));
+    }
+
+    .hero:after {
+      content:"";
+      position:absolute;
+      width:520px;
+      height:520px;
+      border:1px solid rgba(92,200,232,.10);
+      border-radius:50%;
+      right:-180px;
+      top:-240px;
+      box-shadow:
+        0 0 0 60px rgba(92,200,232,.025),
+        0 0 0 120px rgba(92,200,232,.02);
+    }
+
+    .waterline {
+      height:3px;
+      background:linear-gradient(90deg,transparent,#1d80b5,#5cc8e8,#f3a51d,transparent);
+    }
+
+    .port-grid {
+      background-image:
+        linear-gradient(rgba(92,200,232,.035) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(92,200,232,.035) 1px,transparent 1px);
+      background-size:38px 38px;
+    }
+
+    .card-hover {
+      transition:.25s ease;
+    }
+
+    .card-hover:hover {
+      transform:translateY(-3px);
+      border-color:rgba(92,200,232,.45);
+    }
+
+    .status-dot {
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      display:inline-block;
+      margin-right:6px;
+    }
+
+    .legal-text p {
+      margin-bottom:12px;
+    }
+
+    button, a {
+      transition:.2s ease;
+    }
+
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible,
+    select:focus-visible {
+      outline:3px solid #f3a51d;
+      outline-offset:3px;
+    }
+
+    .modal {
+      background:rgba(0,8,14,.88);
+    }
+
+    .wave {
+      opacity:.16;
+      position:absolute;
+      bottom:-5px;
+      left:0;
+      right:0;
+      font-size:100px;
+      line-height:60px;
+      white-space:nowrap;
+      overflow:hidden;
+      color:#5cc8e8;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        scroll-behavior:auto!important;
+        transition:none!important;
+      }
+    }
+  </style>
 </head>
-<body class="bg-gray-900 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
 
-    <!-- HEADER / NAVIGATION -->
-    <header class="nautical-bg border-b border-slate-800 sticky top-0 z-50 shadow-lg">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <i class="fa-solid font-bold fa-anchor text-amber-500 text-2xl"></i>
-                <div>
-                    <h1 class="text-xl font-bold tracking-wider text-white">USPPO<span class="text-amber-500">.com</span></h1>
-                    <p class="text-xs text-slate-400">UN/LOCODE: USPPO — Sparrows Point, MD Logistics Gateway</p>
-                </div>
-            </div>
-            
-            <div class="flex items-center space-x-4 mt-2 sm:mt-0 text-xs sm:text-sm">
-                <div class="bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 flex items-center space-x-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span class="text-slate-300">Port Status: <strong class="text-emerald-400">OPEN / NORMAL</strong></span>
-                </div>
-                <button onclick="openModal('rfqModal')" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-1.5 rounded transition shadow">
-                    Request Drayage Quote
-                </button>
-            </div>
+<body>
+
+<!-- ACCESSIBILITY -->
+<a href="#main"
+   class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] bg-amber-400 text-black px-4 py-2 rounded">
+  Skip to main content
+</a>
+
+
+<!-- TOP NOTICE -->
+<div class="bg-[#04111c] border-b border-slate-800 text-center px-4 py-2 text-[11px] text-slate-400">
+  Independent informational website — not affiliated with the United Nations,
+  U.S. Government, Maryland Port Administration, Tradepoint Atlantic,
+  NOAA, U.S. Coast Guard or any port/terminal operator.
+</div>
+
+
+<!-- HEADER -->
+<header class="sticky top-0 z-40 bg-[#071827]/95 backdrop-blur border-b border-slate-700/60 shadow-xl">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center gap-4">
+
+    <a href="#top" class="flex items-center gap-3">
+      <div class="w-11 h-11 rounded-full border border-cyan-500/30 bg-cyan-500/10 flex items-center justify-center">
+        <i class="fa-solid fa-anchor text-amber-400 text-xl"></i>
+      </div>
+
+      <div>
+        <div class="text-xl font-black tracking-[.14em] text-white">
+          USPPO<span class="text-amber-400">.com</span>
         </div>
-    </header>
-
-    <!-- MAIN CONTENT -->
-    <main class="max-w-7xl mx-auto px-4 py-6 space-y-8 flex-grow w-full">
-
-        <!-- HERO SECTION: MAP & LIVE TELEMETRY -->
-        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <!-- AIS Map Column (2/3 width) -->
-            <div class="lg:col-span-2 nautical-card p-4 rounded-lg border border-slate-800 shadow-md">
-                <div class="flex justify-between items-center mb-3">
-                    <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-satellite-dish text-amber-500"></i>
-                        Live AIS Port Telemetry — Sparrows Point
-                    </h2>
-                    <span class="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded">39.2158° N, 76.4816° W</span>
-                </div>
-                
-                <!-- Live VesselFinder Embed iFrame (Option A) -->
-                <div class="overflow-hidden rounded border border-slate-700 shadow-inner">
-                    <iframe 
-                        id="vf-embed"
-                        src="https://www.vesselfinder.com/aismap?zoom=13&lat=39.2158&lon=-76.4816&width=100%25&height=400&names=true&mmsi=0&track=0&fleet=false&fleet_name=false&fleet_timespan=12&clicktoact=false&store_pos=true" 
-                        width="100%" 
-                        height="400" 
-                        frameborder="0" 
-                        scrolling="no"
-                        class="w-full">
-                    </iframe>
-                </div>
-                <p class="text-[11px] text-slate-500 mt-2 text-right">
-                    *AIS tracking provided via third-party AIS stream for general informational purposes.
-                </p>
-            </div>
-
-            <!-- Quick Port Stats & Weather Panel (1/3 width) -->
-            <div class="space-y-4">
-                <!-- Weather / Conditions Card -->
-                <div class="nautical-card p-4 rounded-lg border border-slate-800">
-                    <h3 class="text-sm font-semibold text-slate-300 mb-3 flex items-center gap-2">
-                        <i class="fa-solid fa-cloud-sun text-amber-500"></i> Sparrows Point Conditions
-                    </h3>
-                    <div class="grid grid-cols-2 gap-3 text-center">
-                        <div class="bg-slate-900/60 p-2.5 rounded border border-slate-800">
-                            <span class="text-xs text-slate-400 block">Wind (Patapsco)</span>
-                            <span class="text-base font-bold text-white">8 kts SSE</span>
-                        </div>
-                        <div class="bg-slate-900/60 p-2.5 rounded border border-slate-800">
-                            <span class="text-xs text-slate-400 block">Tide Height</span>
-                            <span class="text-base font-bold text-white">+1.2 ft (High 14:20)</span>
-                        </div>
-                        <div class="bg-slate-900/60 p-2.5 rounded border border-slate-800">
-                            <span class="text-xs text-slate-400 block">Visibility</span>
-                            <span class="text-base font-bold text-emerald-400">10 NM</span>
-                        </div>
-                        <div class="bg-slate-900/60 p-2.5 rounded border border-slate-800">
-                            <span class="text-xs text-slate-400 block">Air Temp</span>
-                            <span class="text-base font-bold text-white">68° F</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Add Free Business Listing CTA -->
-                <div class="bg-gradient-to-br from-amber-500/10 to-slate-900 p-4 rounded-lg border border-amber-500/30">
-                    <h3 class="text-base font-bold text-amber-400 mb-1">Maryland Logistics Provider?</h3>
-                    <p class="text-xs text-slate-300 mb-3">Add your drayage trucking, cold storage, or customs service to the USPPO directory for free.</p>
-                    <button onclick="openModal('vendorModal')" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/40 text-xs font-bold py-2 rounded transition">
-                        + Add Free Business Listing
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- EXPECTED VESSEL ROSTER -->
-        <section class="nautical-card p-5 rounded-lg border border-slate-800 shadow-md">
-            <div class="flex flex-col sm:flex-row justify-between sm:items-center mb-4 gap-2">
-                <div>
-                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-ship text-amber-500"></i>
-                        Commercial Ships at Berth & Inbound (USPPO)
-                    </h2>
-                    <p class="text-xs text-slate-400">Real-time schedule for Tradepoint Atlantic & Sparrows Point terminals.</p>
-                </div>
-                <input type="text" id="vesselSearch" onkeyup="filterVessels()" placeholder="Search vessel, IMO, or flag..." class="bg-slate-900 border border-slate-700 rounded text-xs px-3 py-1.5 focus:outline-none focus:border-amber-500 text-slate-200">
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs text-slate-300" id="vesselTable">
-                    <thead class="bg-slate-900 text-slate-400 uppercase text-[10px] tracking-wider border-b border-slate-800">
-                        <tr>
-                            <th class="p-3">Vessel Name</th>
-                            <th class="p-3">Type</th>
-                            <th class="p-3">Flag</th>
-                            <th class="p-3">IMO / MMSI</th>
-                            <th class="p-3">Status</th>
-                            <th class="p-3">ETA / Berth</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-800/60">
-                        <tr class="hover:bg-slate-800/40 transition">
-                            <td class="p-3 font-semibold text-white">MSC SHANTOU</td>
-                            <td class="p-3">Container Ship</td>
-                            <td class="p-3">Liberia 🇱🇷</td>
-                            <td class="p-3 text-slate-400">9708681</td>
-                            <td class="p-3"><span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px]">At Berth 2</span></td>
-                            <td class="p-3">Departing 18:00</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/40 transition">
-                            <td class="p-3 font-semibold text-white">BALTIMORE HIGHWAY</td>
-                            <td class="p-3">Ro-Ro Vehicle Carrier</td>
-                            <td class="p-3">Japan 🇯🇵</td>
-                            <td class="p-3 text-slate-400">9728083</td>
-                            <td class="p-3"><span class="bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2 py-0.5 rounded text-[10px]">Inbound / Approach</span></td>
-                            <td class="p-3">ETA Today 16:30</td>
-                        </tr>
-                        <tr class="hover:bg-slate-800/40 transition">
-                            <td class="p-3 font-semibold text-white">EAGLE BALTIMORE</td>
-                            <td class="p-3">Bulk Carrier</td>
-                            <td class="p-3">Panama 🇵🇦</td>
-                            <td class="p-3 text-slate-400">9621120</td>
-                            <td class="p-3"><span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded text-[10px]">At Berth 4</span></td>
-                            <td class="p-3">Discharging Cargo</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- FREE B2B LOGISTICS DIRECTORY -->
-        <section class="space-y-4">
-            <div class="flex justify-between items-end border-b border-slate-800 pb-2">
-                <div>
-                    <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-truck-fast text-amber-500"></i>
-                        Sparrows Point Local Logistics Directory
-                    </h2>
-                    <p class="text-xs text-slate-400">Verified drayage, warehousing, and customs providers serving USPPO.</p>
-                </div>
-                <button onclick="openModal('vendorModal')" class="text-xs text-amber-400 hover:underline">
-                    + Register Your Company
-                </button>
-            </div>
-
-            <!-- Vendor Cards Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="vendorGrid">
-                <!-- Sample Vendor Card 1 -->
-                <div class="nautical-card p-4 rounded-lg border border-slate-800 space-y-2">
-                    <div class="flex justify-between items-start">
-                        <h3 class="font-bold text-white text-sm">Chesapeake Drayage Express</h3>
-                        <span class="bg-slate-800 text-amber-400 text-[10px] px-2 py-0.5 rounded border border-slate-700">Drayage / Trucking</span>
-                    </div>
-                    <p class="text-xs text-slate-400">Direct container haulage from Sparrows Point terminals to regional rail ramps and interstate 95.</p>
-                    <div class="text-xs text-slate-300 pt-2 border-t border-slate-800/80 flex justify-between items-center">
-                        <span><i class="fa-solid fa-phone text-slate-500 mr-1"></i> (410) 555-0192</span>
-                        <a href="mailto:dispatch@example.com" class="text-amber-400 hover:underline">Contact Dispatch</a>
-                    </div>
-                </div>
-
-                <!-- Sample Vendor Card 2 -->
-                <div class="nautical-card p-4 rounded-lg border border-slate-800 space-y-2">
-                    <div class="flex justify-between items-start">
-                        <h3 class="font-bold text-white text-sm">Tradepoint Cold Logistics</h3>
-                        <span class="bg-slate-800 text-emerald-400 text-[10px] px-2 py-0.5 rounded border border-slate-700">Cold Storage</span>
-                    </div>
-                    <p class="text-xs text-slate-400">200,000 sq ft temperature-controlled warehouse facility within 2 miles of USPPO dock facilities.</p>
-                    <div class="text-xs text-slate-300 pt-2 border-t border-slate-800/80 flex justify-between items-center">
-                        <span><i class="fa-solid fa-phone text-slate-500 mr-1"></i> (410) 555-0144</span>
-                        <a href="mailto:info@example.com" class="text-amber-400 hover:underline">Request Space</a>
-                    </div>
-                </div>
-
-                <!-- Sample Vendor Card 3 -->
-                <div class="nautical-card p-4 rounded-lg border border-slate-800 space-y-2">
-                    <div class="flex justify-between items-start">
-                        <h3 class="font-bold text-white text-sm">Mid-Atlantic Customs Brokers</h3>
-                        <span class="bg-slate-800 text-blue-400 text-[10px] px-2 py-0.5 rounded border border-slate-700">Customs Clearance</span>
-                    </div>
-                    <p class="text-xs text-slate-400">Fast-track US Customs entry clearance, ISF filing, and bond services for Baltimore port arrivals.</p>
-                    <div class="text-xs text-slate-300 pt-2 border-t border-slate-800/80 flex justify-between items-center">
-                        <span><i class="fa-solid fa-phone text-slate-500 mr-1"></i> (410) 555-0881</span>
-                        <a href="mailto:docs@example.com" class="text-amber-400 hover:underline">Submit Docs</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER WITH LEGAL DISCLAIMERS -->
-    <footer class="nautical-bg border-t border-slate-800 mt-12 py-8 text-slate-400 text-xs">
-        <div class="max-w-7xl mx-auto px-4 space-y-6">
-            
-            <!-- MANDATORY LEGAL DISCLAIMER NOTICE -->
-            <div class="bg-slate-900/90 p-4 rounded border border-slate-800/80 space-y-2 text-[11px] leading-relaxed text-slate-400">
-                <p class="font-semibold text-slate-300 uppercase tracking-wider text-[10px] flex items-center gap-1.5">
-                    <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> 
-                    Legal Notice & Operational Disclaimer
-                </p>
-                <p>
-                    <strong>NOT FOR NAVIGATION OR SAFETY OF LIFE:</strong> Telemetry, AIS vessel tracking positions, wind/weather reports, and schedule data presented on USPPO.com are aggregated from third-party public broadcasts for commercial logistics planning only. This platform is <strong>NOT</strong> intended for maritime navigation, collision avoidance, or safety-of-life decisions. Vessel officers must rely solely on official bridge navigation instruments and official harbor pilots.
-                </p>
-                <p>
-                    <strong>3RD-PARTY AGGREGATOR NOTICE:</strong> USPPO.com operates as an independent informational portal. All data is provided on an "AS-IS" basis without warranties of accuracy or timeliness. USPPO.com assumes no liability for freight delays, gate closures, or third-party vendor performance.
-                </p>
-            </div>
-
-            <div class="flex flex-col sm:flex-row justify-between items-center pt-4 border-t border-slate-800 gap-3">
-                <p>© 2026 USPPO.com — Independent Port Information Gateway for UN/LOCODE: USPPO (Sparrows Point, MD).</p>
-                <div class="flex space-x-4">
-                    <button onclick="openModal('disclaimerModal')" class="hover:text-amber-400 underline">Terms of Use & Privacy</button>
-                    <span>|</span>
-                    <a href="mailto:admin@usppo.com" class="hover:text-amber-400">Contact Webmaster</a>
-                </div>
-            </div>
-
+        <div class="text-[10px] uppercase tracking-[.18em] text-slate-400">
+          Sparrows Point • Maryland
         </div>
-    </footer>
+      </div>
+    </a>
 
-    <!-- MODAL 1: DRAYAGE RFQ DISPATCH FORM -->
-    <div id="rfqModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="nautical-card border border-slate-700 rounded-lg max-w-lg w-full p-6 space-y-4 shadow-2xl relative">
-            <button onclick="closeModal('rfqModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-paper-plane text-amber-500"></i> Dispatch Drayage / Cargo RFQ
-            </h3>
-            <p class="text-xs text-slate-400">Submit your cargo specifications. Requests are routed to local Sparrows Point carriers.</p>
-            
-            <form onsubmit="handleRfqSubmit(event)" class="space-y-3 text-xs">
-                <div>
-                    <label class="block text-slate-300 mb-1">Company / Freight Broker Name</label>
-                    <input type="text" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-slate-300 mb-1">Contact Email</label>
-                        <input type="email" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500">
-                    </div>
-                    <div>
-                        <label class="block text-slate-300 mb-1">Phone Number</label>
-                        <input type="tel" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-slate-300 mb-1">Cargo / Container Specifications</label>
-                    <textarea rows="3" required placeholder="e.g., 2x 40ft HC containers from Tradepoint Berth 2 to Jessup, MD..." class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500"></textarea>
-                </div>
-                
-                <!-- Mandatory Disclaimer Checkbox -->
-                <div class="flex items-start gap-2 pt-2">
-                    <input type="checkbox" id="rfqConsent" required class="mt-0.5 accent-amber-500">
-                    <label for="rfqConsent" class="text-[11px] text-slate-400 leading-tight">
-                        I understand that USPPO.com is an informational directory and agree that quote submissions do not establish a binding contract until confirmed directly by a vendor.
-                    </label>
-                </div>
+    <nav class="hidden lg:flex gap-6 text-xs font-semibold text-slate-300">
+      <a href="#conditions" class="hover:text-amber-400">Conditions</a>
+      <a href="#vessels" class="hover:text-amber-400">Vessels</a>
+      <a href="#directory" class="hover:text-amber-400">Logistics</a>
+      <a href="#resources" class="hover:text-amber-400">Resources</a>
+      <a href="#safety" class="hover:text-amber-400">Safety</a>
+    </nav>
 
-                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold py-2.5 rounded transition">
-                    Dispatch Free Quote Request
-                </button>
-            </form>
-        </div>
+    <button onclick="openModal('rfqModal')"
+      class="bg-amber-400 hover:bg-amber-300 text-[#071827] font-bold text-xs px-4 py-2.5 rounded-lg shadow">
+      <i class="fa-solid fa-file-lines mr-1"></i>
+      Request Quote
+    </button>
+
+  </div>
+</header>
+
+
+<!-- HERO -->
+<section id="top" class="hero port-grid border-b border-slate-700/50">
+  <div class="max-w-7xl mx-auto px-4 py-16 md:py-24 relative z-10">
+
+    <div class="max-w-4xl">
+
+      <div class="inline-flex items-center gap-2 border border-cyan-500/30 bg-cyan-500/10 rounded-full px-3 py-1.5 text-[11px] uppercase tracking-widest text-cyan-200 mb-6">
+        <i class="fa-solid fa-location-dot text-amber-400"></i>
+        UN/LOCODE USPPO • Sparrows Point, Maryland
+      </div>
+
+      <h1 class="text-4xl md:text-6xl font-black leading-tight text-white tracking-tight">
+        Sparrows Point
+        <span class="block text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-400">
+          Maritime & Logistics Gateway
+        </span>
+      </h1>
+
+      <p class="mt-6 text-base md:text-lg text-slate-300 max-w-3xl leading-relaxed">
+        One independent gateway for maritime conditions, vessel resources,
+        trucking, warehousing, customs services and logistics information
+        serving Sparrows Point and the greater Baltimore region.
+      </p>
+
+      <div class="flex flex-wrap gap-3 mt-8">
+
+        <a href="#conditions"
+           class="bg-amber-400 hover:bg-amber-300 text-[#071827] font-bold px-5 py-3 rounded-lg text-sm">
+          <i class="fa-solid fa-water mr-2"></i>
+          Port Conditions
+        </a>
+
+        <a href="#directory"
+           class="border border-slate-500 hover:border-cyan-400 bg-slate-900/50 text-white font-semibold px-5 py-3 rounded-lg text-sm">
+          <i class="fa-solid fa-truck-fast mr-2"></i>
+          Logistics Directory
+        </a>
+
+      </div>
     </div>
 
-    <!-- MODAL 2: ADD FREE VENDOR LISTING FORM -->
-    <div id="vendorModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="nautical-card border border-slate-700 rounded-lg max-w-lg w-full p-6 space-y-4 shadow-2xl relative">
-            <button onclick="closeModal('vendorModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="text-lg font-bold text-white flex items-center gap-2">
-                <i class="fa-solid fa-building text-amber-500"></i> Free Vendor Registration
-            </h3>
-            <p class="text-xs text-slate-400">Get your Maryland logistics business listed in front of freight brokers and port managers.</p>
-            
-            <form onsubmit="handleVendorSubmit(event)" class="space-y-3 text-xs">
-                <div>
-                    <label class="block text-slate-300 mb-1">Business Name</label>
-                    <input type="text" id="vName" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500">
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-slate-300 mb-1">Service Category</label>
-                        <select id="vCategory" class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500">
-                            <option>Drayage / Trucking</option>
-                            <option>Warehousing & Storage</option>
-                            <option>Cold Storage</option>
-                            <option>Customs Brokerage</option>
-                            <option>Chassis & Repair</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-slate-300 mb-1">Dispatch Phone</label>
-                        <input type="text" id="vPhone" required class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-slate-300 mb-1">Short Description of Services</label>
-                    <textarea id="vDesc" rows="2" required placeholder="Briefly describe your fleet, warehouse square footage, or specialty..." class="w-full bg-slate-900 border border-slate-700 rounded p-2 text-white focus:border-amber-500"></textarea>
-                </div>
-                <button type="submit" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold py-2.5 rounded transition">
-                    Publish Free Profile
-                </button>
-            </form>
-        </div>
+    <div class="wave">≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈</div>
+  </div>
+</section>
+
+<div class="waterline"></div>
+
+
+<!-- MAIN -->
+<main id="main" class="max-w-7xl mx-auto px-4 py-10 space-y-14">
+
+
+<!-- TRUST STRIP -->
+<section class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+
+  <div class="glass rounded-xl p-4">
+    <div class="text-amber-400 text-lg mb-2">
+      <i class="fa-solid fa-compass"></i>
+    </div>
+    <div class="font-bold text-sm text-white">Independent</div>
+    <div class="text-xs text-slate-400 mt-1">Privately operated information gateway.</div>
+  </div>
+
+  <div class="glass rounded-xl p-4">
+    <div class="text-cyan-300 text-lg mb-2">
+      <i class="fa-solid fa-cloud-sun"></i>
+    </div>
+    <div class="font-bold text-sm text-white">Official Weather</div>
+    <div class="text-xs text-slate-400 mt-1">NWS data when available.</div>
+  </div>
+
+  <div class="glass rounded-xl p-4">
+    <div class="text-blue-300 text-lg mb-2">
+      <i class="fa-solid fa-water"></i>
+    </div>
+    <div class="font-bold text-sm text-white">NOAA Resources</div>
+    <div class="text-xs text-slate-400 mt-1">Tides & marine information.</div>
+  </div>
+
+  <div class="glass rounded-xl p-4">
+    <div class="text-emerald-300 text-lg mb-2">
+      <i class="fa-solid fa-shield-halved"></i>
+    </div>
+    <div class="font-bold text-sm text-white">Safety First</div>
+    <div class="text-xs text-slate-400 mt-1">Never intended for navigation.</div>
+  </div>
+
+</section>
+
+
+<!-- CONDITIONS -->
+<section id="conditions">
+
+  <div class="mb-6">
+    <div class="text-amber-400 uppercase tracking-[.18em] text-[10px] font-bold">
+      Maritime Intelligence
     </div>
 
-    <!-- MODAL 3: FULL TERMS & DISCLAIMER WINDOW -->
-    <div id="disclaimerModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="nautical-card border border-slate-700 rounded-lg max-w-2xl w-full p-6 space-y-4 shadow-2xl relative max-h-[80vh] overflow-y-auto">
-            <button onclick="closeModal('disclaimerModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            <h3 class="text-lg font-bold text-white">USPPO.com Terms of Service & Privacy Statement</h3>
-            <div class="text-xs text-slate-300 space-y-3 leading-relaxed">
-                <p><strong>1. Informational Purpose Only:</strong> All content, telemetry, map representations, and vendor listings provided on USPPO.com are for public informational use. USPPO.com is not affiliated with the Maryland Port Administration or Tradepoint Atlantic unless explicitly stated.</p>
-                <p><strong>2. No Maritime Navigation Usage:</strong> Data provided on this site must not be relied upon for vessel piloting, navigation, docking, or safety-of-life decisions.</p>
-                <p><strong>3. Limitation of Liability:</strong> Under no circumstances shall USPPO.com, its operators, or owners be held liable for commercial losses, demurrage charges, freight delays, or accidents resulting from data provided on this platform.</p>
-            </div>
-            <button onclick="closeModal('disclaimerModal')" class="w-full bg-slate-800 text-slate-200 text-xs font-bold py-2 rounded">Close Window</button>
+    <h2 class="text-2xl md:text-3xl font-black text-white mt-1">
+      Sparrows Point Conditions
+    </h2>
+
+    <p class="text-sm text-slate-400 mt-2">
+      Government weather information is retrieved directly from the
+      National Weather Service when available.
+    </p>
+  </div>
+
+
+  <div class="grid lg:grid-cols-3 gap-5">
+
+    <!-- WEATHER -->
+    <div class="lg:col-span-2 glass rounded-2xl p-5">
+
+      <div class="flex justify-between items-start gap-4 mb-5">
+        <div>
+          <h3 class="font-bold text-white">
+            <i class="fa-solid fa-cloud-sun text-amber-400 mr-2"></i>
+            Current Weather
+          </h3>
+
+          <p id="weatherSource" class="text-[11px] text-slate-500 mt-1">
+            Loading official NWS information...
+          </p>
         </div>
+
+        <span id="weatherStatus"
+              class="text-[10px] bg-slate-800 border border-slate-700 rounded-full px-3 py-1 text-slate-400">
+          CONNECTING
+        </span>
+      </div>
+
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
+        <div class="bg-[#061521] rounded-xl p-4 border border-slate-800">
+          <div class="text-[10px] uppercase tracking-wider text-slate-500">Temperature</div>
+          <div id="temp" class="text-2xl font-black text-white mt-2">--</div>
+        </div>
+
+        <div class="bg-[#061521] rounded-xl p-4 border border-slate-800">
+          <div class="text-[10px] uppercase tracking-wider text-slate-500">Wind</div>
+          <div id="wind" class="text-lg font-bold text-white mt-2">--</div>
+        </div>
+
+        <div class="bg-[#061521] rounded-xl p-4 border border-slate-800">
+          <div class="text-[10px] uppercase tracking-wider text-slate-500">Forecast</div>
+          <div id="forecast" class="text-sm font-bold text-white mt-2">--</div>
+        </div>
+
+        <div class="bg-[#061521] rounded-xl p-4 border border-slate-800">
+          <div class="text-[10px] uppercase tracking-wider text-slate-500">Updated</div>
+          <div id="updated" class="text-sm font-bold text-white mt-2">--</div>
+        </div>
+
+      </div>
+
+      <div class="mt-4 bg-amber-400/5 border border-amber-400/20 rounded-lg p-3 text-[11px] text-slate-400">
+        <i class="fa-solid fa-circle-info text-amber-400 mr-1"></i>
+        Weather can change rapidly. Confirm operational decisions with
+        appropriate official authorities and terminal operators.
+      </div>
+
     </div>
 
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        // Modal Handlers
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-        }
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-        }
 
-        // Live Table Search Filter
-        function filterVessels() {
-            const input = document.getElementById('vesselSearch').value.toUpperCase();
-            const tr = document.getElementById('vesselTable').getElementsByTagName('tr');
-            for (let i = 1; i < tr.length; i++) {
-                let text = tr[i].textContent || tr[i].innerText;
-                tr[i].style.display = text.toUpperCase().indexOf(input) > -1 ? "" : "none";
-            }
-        }
+    <!-- TIDES -->
+    <div class="glass rounded-2xl p-5">
 
-        // Handle RFQ Form Submission
-        function handleRfqSubmit(e) {
-            e.preventDefault();
-            alert("Thank you! Your freight request has been broadcast to participating Sparrows Point logistics providers.");
-            closeModal('rfqModal');
-        }
+      <h3 class="font-bold text-white">
+        <i class="fa-solid fa-water text-cyan-300 mr-2"></i>
+        NOAA Tides
+      </h3>
 
-        // Handle Adding Free Vendor to Directory
-        function handleVendorSubmit(e) {
-            e.preventDefault();
-            const name = document.getElementById('vName').value;
-            const category = document.getElementById('vCategory').value;
-            const phone = document.getElementById('vPhone').value;
-            const desc = document.getElementById('vDesc').value;
+      <p class="text-[11px] text-slate-500 mt-1">
+        Baltimore-area NOAA tide resources
+      </p>
 
-            const grid = document.getElementById('vendorGrid');
-            const newCard = document.createElement('div');
-            newCard.className = "nautical-card p-4 rounded-lg border border-amber-500/40 space-y-2";
-            newCard.innerHTML = `
-                <div class="flex justify-between items-start">
-                    <h3 class="font-bold text-white text-sm">${name}</h3>
-                    <span class="bg-slate-800 text-amber-400 text-[10px] px-2 py-0.5 rounded border border-slate-700">${category}</span>
-                </div>
-                <p class="text-xs text-slate-400">${desc}</p>
-                <div class="text-xs text-slate-300 pt-2 border-t border-slate-800/80 flex justify-between items-center">
-                    <span><i class="fa-solid fa-phone text-slate-500 mr-1"></i> ${phone}</span>
-                    <span class="text-emerald-400 text-[10px]">Newly Listed</span>
-                </div>
-            `;
-            grid.prepend(newCard);
-            alert("Success! Your free business listing is now active on USPPO.com.");
-            closeModal('vendorModal');
+      <div class="mt-5 space-y-3">
+
+        <a target="_blank"
+           rel="noopener noreferrer"
+           href="https://tidesandcurrents.noaa.gov/"
+           class="block bg-[#061521] hover:bg-[#0b2438] border border-slate-800 rounded-xl p-4">
+
+          <div class="text-sm font-bold text-white">
+            NOAA Tides & Currents
+          </div>
+
+          <div class="text-xs text-slate-400 mt-1">
+            Official water levels, tide predictions and observations.
+          </div>
+
+        </a>
+
+        <a target="_blank"
+           rel="noopener noreferrer"
+           href="https://www.weather.gov/marine/"
+           class="block bg-[#061521] hover:bg-[#0b2438] border border-slate-800 rounded-xl p-4">
+
+          <div class="text-sm font-bold text-white">
+            NWS Marine Forecast
+          </div>
+
+          <div class="text-xs text-slate-400 mt-1">
+            Official marine weather resources.
+          </div>
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- VESSEL SECTION -->
+<section id="vessels">
+
+  <div class="mb-6">
+    <div class="text-amber-400 uppercase tracking-[.18em] text-[10px] font-bold">
+      Vessel Information
+    </div>
+
+    <h2 class="text-2xl md:text-3xl font-black text-white mt-1">
+      Vessel & AIS Resources
+    </h2>
+  </div>
+
+
+  <div class="glass rounded-2xl overflow-hidden">
+
+    <div class="grid lg:grid-cols-2">
+
+      <div class="p-7 md:p-9">
+
+        <div class="w-14 h-14 bg-cyan-500/10 border border-cyan-500/20 rounded-xl flex items-center justify-center mb-5">
+          <i class="fa-solid fa-ship text-cyan-300 text-2xl"></i>
+        </div>
+
+        <h3 class="text-xl font-bold text-white">
+          Track Vessels Using an AIS Provider
+        </h3>
+
+        <p class="text-sm text-slate-400 mt-3 leading-relaxed">
+          USPPO.com does not manufacture or estimate vessel positions.
+          Vessel positions should be obtained directly from an AIS provider
+          under that provider's applicable terms.
+        </p>
+
+        <div class="mt-5 border border-red-400/20 bg-red-400/5 rounded-lg p-4">
+          <div class="font-bold text-red-300 text-xs">
+            <i class="fa-solid fa-triangle-exclamation mr-1"></i>
+            NOT FOR NAVIGATION
+          </div>
+
+          <p class="text-[11px] text-slate-400 mt-2">
+            AIS data may be delayed, incomplete, inaccurate or unavailable.
+            Never use this website or consumer AIS information for navigation,
+            collision avoidance, piloting, docking or safety-of-life decisions.
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="bg-[#061521] p-7 md:p-9 border-t lg:border-t-0 lg:border-l border-slate-800">
+
+        <h3 class="font-bold text-white mb-4">
+          Why isn't there a fake vessel roster?
+        </h3>
+
+        <p class="text-sm text-slate-400 leading-relaxed">
+          Vessel names, berth assignments and arrival times change frequently.
+          USPPO.com intentionally does not display hard-coded information as
+          though it were current.
+        </p>
+
+        <div class="mt-6 space-y-3 text-xs">
+
+          <div class="flex gap-3">
+            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+            <span class="text-slate-300">No fabricated arrival times</span>
+          </div>
+
+          <div class="flex gap-3">
+            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+            <span class="text-slate-300">No invented berth assignments</span>
+          </div>
+
+          <div class="flex gap-3">
+            <i class="fa-solid fa-check text-emerald-400 mt-1"></i>
+            <span class="text-slate-300">Third-party information identified as third-party</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</section>
+
+
+<!-- LOGISTICS DIRECTORY -->
+<section id="directory">
+
+  <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-4 mb-6">
+
+    <div>
+      <div class="text-amber-400 uppercase tracking-[.18em] text-[10px] font-bold">
+        Business Network
+      </div>
+
+      <h2 class="text-2xl md:text-3xl font-black text-white mt-1">
+        Sparrows Point Logistics Directory
+      </h2>
+
+      <p class="text-sm text-slate-400 mt-2">
+        A future directory of reviewed logistics providers serving the region.
+      </p>
+    </div>
+
+    <button onclick="openModal('vendorModal')"
+            class="border border-amber-400/50 text-amber-300 hover:bg-amber-400 hover:text-[#071827] px-5 py-2.5 rounded-lg text-xs font-bold">
+      <i class="fa-solid fa-plus mr-1"></i>
+      Submit Free Listing
+    </button>
+
+  </div>
+
+
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+    <div class="glass card-hover rounded-xl p-5">
+      <i class="fa-solid fa-truck-fast text-amber-400 text-xl"></i>
+      <h3 class="font-bold text-white mt-4">Drayage & Trucking</h3>
+      <p class="text-xs text-slate-400 mt-2">
+        Container hauling, regional trucking and freight transportation.
+      </p>
+      <div class="text-[10px] text-slate-500 mt-5 uppercase tracking-wider">
+        Verified listings coming soon
+      </div>
+    </div>
+
+    <div class="glass card-hover rounded-xl p-5">
+      <i class="fa-solid fa-warehouse text-cyan-300 text-xl"></i>
+      <h3 class="font-bold text-white mt-4">Warehousing</h3>
+      <p class="text-xs text-slate-400 mt-2">
+        Storage, distribution, transloading and fulfillment providers.
+      </p>
+      <div class="text-[10px] text-slate-500 mt-5 uppercase tracking-wider">
+        Verified listings coming soon
+      </div>
+    </div>
+
+    <div class="glass card-hover rounded-xl p-5">
+      <i class="fa-solid fa-snowflake text-blue-300 text-xl"></i>
+      <h3 class="font-bold text-white mt-4">Cold Storage</h3>
+      <p class="text-xs text-slate-400 mt-2">
+        Temperature-controlled warehousing and refrigerated logistics.
+      </p>
+      <div class="text-[10px] text-slate-500 mt-5 uppercase tracking-wider">
+        Verified listings coming soon
+      </div>
+    </div>
+
+    <div class="glass card-hover rounded-xl p-5">
+      <i class="fa-solid fa-file-signature text-emerald-300 text-xl"></i>
+      <h3 class="font-bold text-white mt-4">Customs Brokerage</h3>
+      <p class="text-xs text-slate-400 mt-2">
+        Customs brokerage and import/export support resources.
+      </p>
+      <div class="text-[10px] text-slate-500 mt-5 uppercase tracking-wider">
+        Verified listings coming soon
+      </div>
+    </div>
+
+    <div class="glass card-hover rounded-xl p-5">
+      <i class="fa-solid fa-train text-purple-300 text-xl"></i>
+      <h3 class="font-bold text-white mt-4">Rail & Intermodal</h3>
+      <p class="text-xs text-slate-400 mt-2">
+        Rail, intermodal and regional transportation resources.
+      </p>
+      <div class="text-[10px] text-slate-500 mt-5 uppercase tracking-wider">
+        Resources coming soon
+      </div>
+    </div>
+
+    <div class="glass card-hover rounded-xl p-5">
+      <i class="fa-solid fa-screwdriver-wrench text-orange-300 text-xl"></i>
+      <h3 class="font-bold text-white mt-4">Equipment & Repair</h3>
+      <p class="text-xs text-slate-400 mt-2">
+        Chassis, container, truck and logistics equipment services.
+      </p>
+      <div class="text-[10px] text-slate-500 mt-5 uppercase tracking-wider">
+        Resources coming soon
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- FREE TOOLS -->
+<section id="resources">
+
+  <div class="mb-6">
+    <div class="text-amber-400 uppercase tracking-[.18em] text-[10px] font-bold">
+      Free Resources
+    </div>
+
+    <h2 class="text-2xl md:text-3xl font-black text-white mt-1">
+      Logistics Tools & Official Resources
+    </h2>
+  </div>
+
+
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+    <a target="_blank"
+       rel="noopener noreferrer"
+       href="https://www.weather.gov/"
+       class="glass card-hover rounded-xl p-5 block">
+
+      <i class="fa-solid fa-cloud text-cyan-300 text-xl"></i>
+      <div class="font-bold text-white mt-4">National Weather Service</div>
+      <div class="text-xs text-slate-400 mt-2">Official U.S. weather forecasts and alerts.</div>
+    </a>
+
+
+    <a target="_blank"
+       rel="noopener noreferrer"
+       href="https://tidesandcurrents.noaa.gov/"
+       class="glass card-hover rounded-xl p-5 block">
+
+      <i class="fa-solid fa-water text-blue-300 text-xl"></i>
+      <div class="font-bold text-white mt-4">NOAA Tides</div>
+      <div class="text-xs text-slate-400 mt-2">Water levels and tide information.</div>
+    </a>
+
+
+    <a target="_blank"
+       rel="noopener noreferrer"
+       href="https://www.uscg.mil/"
+       class="glass card-hover rounded-xl p-5 block">
+
+      <i class="fa-solid fa-shield text-amber-400 text-xl"></i>
+      <div class="font-bold text-white mt-4">U.S. Coast Guard</div>
+      <div class="text-xs text-slate-400 mt-2">Official Coast Guard resources and information.</div>
+    </a>
+
+
+    <a target="_blank"
+       rel="noopener noreferrer"
+       href="https://www.cbp.gov/"
+       class="glass card-hover rounded-xl p-5 block">
+
+      <i class="fa-solid fa-passport text-emerald-300 text-xl"></i>
+      <div class="font-bold text-white mt-4">U.S. Customs & Border Protection</div>
+      <div class="text-xs text-slate-400 mt-2">Official trade and customs information.</div>
+    </a>
+
+  </div>
+
+
+  <!-- CONVERTER -->
+  <div class="glass rounded-2xl p-6 mt-5">
+
+    <h3 class="font-bold text-white">
+      <i class="fa-solid fa-calculator text-amber-400 mr-2"></i>
+      Free Maritime Unit Converter
+    </h3>
+
+    <div class="grid md:grid-cols-3 gap-3 mt-5">
+
+      <input id="unitValue"
+             type="number"
+             placeholder="Enter value"
+             class="bg-[#061521] border border-slate-700 rounded-lg px-4 py-3 text-sm text-white">
+
+      <select id="conversionType"
+              class="bg-[#061521] border border-slate-700 rounded-lg px-4 py-3 text-sm text-white">
+        <option value="nmMiles">Nautical Miles → Miles</option>
+        <option value="milesNm">Miles → Nautical Miles</option>
+        <option value="kgLb">Kilograms → Pounds</option>
+        <option value="lbKg">Pounds → Kilograms</option>
+        <option value="cF">Celsius → Fahrenheit</option>
+        <option value="fC">Fahrenheit → Celsius</option>
+      </select>
+
+      <button onclick="convertUnit()"
+              class="bg-amber-400 hover:bg-amber-300 text-[#071827] font-bold rounded-lg px-5 py-3 text-sm">
+        Convert
+      </button>
+
+    </div>
+
+    <div id="conversionResult"
+         class="mt-4 text-lg font-bold text-cyan-300"
+         aria-live="polite"></div>
+
+  </div>
+
+</section>
+
+
+<!-- SAFETY -->
+<section id="safety"
+         class="border border-amber-400/20 bg-amber-400/5 rounded-2xl p-6 md:p-8">
+
+  <div class="flex flex-col md:flex-row gap-5">
+
+    <div class="text-amber-400 text-3xl">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+    </div>
+
+    <div>
+      <h2 class="text-xl font-black text-white">
+        Important Maritime Safety Notice
+      </h2>
+
+      <p class="text-sm text-slate-300 mt-3 leading-relaxed">
+        USPPO.com is an informational resource only. Information displayed
+        or linked through this website must not be used for vessel navigation,
+        piloting, collision avoidance, docking, emergency response or any
+        safety-of-life decision.
+      </p>
+
+      <p class="text-xs text-slate-400 mt-3 leading-relaxed">
+        Mariners and commercial operators must rely on appropriate official
+        navigation equipment, Notices to Mariners, U.S. Coast Guard information,
+        harbor pilots, terminal operators and other authoritative sources.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ABOUT -->
+<section class="glass rounded-2xl p-7 md:p-9">
+
+  <div class="max-w-4xl">
+
+    <div class="text-amber-400 uppercase tracking-[.18em] text-[10px] font-bold">
+      About The Platform
+    </div>
+
+    <h2 class="text-2xl font-black text-white mt-2">
+      What is USPPO.com?
+    </h2>
+
+    <p class="text-sm text-slate-300 leading-relaxed mt-4">
+      USPPO.com is an independently operated maritime and logistics information
+      website focused on Sparrows Point, Maryland and the surrounding Baltimore
+      logistics region.
+    </p>
+
+    <p class="text-sm text-slate-400 leading-relaxed mt-3">
+      The name references the UN/LOCODE used for Sparrows Point. Use of a
+      location code does not indicate sponsorship, approval, ownership,
+      endorsement or affiliation with the United Nations or any governmental,
+      port, terminal or maritime authority.
+    </p>
+
+  </div>
+
+</section>
+
+</main>
+
+
+<!-- FOOTER -->
+<footer class="bg-[#04111c] border-t border-slate-800 mt-16">
+
+  <div class="max-w-7xl mx-auto px-4 py-10">
+
+    <div class="grid md:grid-cols-3 gap-8">
+
+      <div>
+        <div class="text-lg font-black tracking-widest text-white">
+          USPPO<span class="text-amber-400">.com</span>
+        </div>
+
+        <p class="text-xs text-slate-500 mt-3 leading-relaxed">
+          Independent maritime and logistics information gateway for
+          Sparrows Point, Maryland.
+        </p>
+      </div>
+
+
+      <div>
+        <div class="text-xs font-bold text-white uppercase tracking-wider">
+          Information
+        </div>
+
+        <div class="space-y-2 mt-3 text-xs text-slate-400">
+          <button onclick="openModal('termsModal')" class="block hover:text-amber-400">Terms of Use</button>
+          <button onclick="openModal('privacyModal')" class="block hover:text-amber-400">Privacy Policy</button>
+          <button onclick="openModal('sourcesModal')" class="block hover:text-amber-400">Data Sources</button>
+          <button onclick="openModal('accessibilityModal')" class="block hover:text-amber-400">Accessibility</button>
+        </div>
+      </div>
+
+
+      <div>
+        <div class="text-xs font-bold text-white uppercase tracking-wider">
+          Contact
+        </div>
+
+        <p class="text-xs text-slate-500 mt-3">
+          Questions, corrections or listing requests:
+        </p>
+
+        <a href="mailto:admin@usppo.com"
+           class="text-xs text-amber-400 hover:text-amber-300 mt-2 inline-block">
+          admin@usppo.com
+        </a>
+      </div>
+
+    </div>
+
+
+    <div class="border-t border-slate-800 mt-8 pt-6 text-[10px] text-slate-500 leading-relaxed">
+      <p>
+        © 2026 USPPO.com. Independent information platform. USPPO.com is not
+        affiliated with or endorsed by the United Nations, UNECE, NOAA,
+        National Weather Service, U.S. Coast Guard, U.S. Customs and Border
+        Protection, State of Maryland, Maryland Port Administration,
+        Tradepoint Atlantic or any terminal operator unless expressly stated.
+      </p>
+
+      <p class="mt-3">
+        Third-party names and trademarks remain the property of their respective
+        owners. References are for identification and informational purposes only.
+      </p>
+    </div>
+
+  </div>
+</footer>
+
+
+<!-- RFQ MODAL -->
+<div id="rfqModal"
+     class="modal fixed inset-0 hidden z-50 items-center justify-center p-4">
+
+  <div class="glass rounded-2xl max-w-xl w-full p-6 relative">
+
+    <button onclick="closeModal('rfqModal')"
+            aria-label="Close quote window"
+            class="absolute right-4 top-4 text-slate-400 hover:text-white">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <h2 class="text-xl font-black text-white">
+      Freight Quote Request
+    </h2>
+
+    <div class="mt-4 bg-amber-400/5 border border-amber-400/20 rounded-lg p-4">
+
+      <div class="font-bold text-amber-300 text-xs">
+        PRE-LAUNCH NOTICE
+      </div>
+
+      <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+        Automated RFQ transmission is not yet enabled. USPPO.com will not claim
+        that your request was sent to carriers when it was not.
+      </p>
+
+    </div>
+
+    <p class="text-sm text-slate-400 mt-5">
+      Until verified provider routing is activated, you may contact USPPO.com
+      regarding participation in the future free RFQ network.
+    </p>
+
+    <a href="mailto:admin@usppo.com?subject=USPPO%20RFQ%20Network%20Inquiry"
+       class="block text-center mt-5 bg-amber-400 hover:bg-amber-300 text-[#071827] font-bold py-3 rounded-lg text-sm">
+      Email USPPO.com
+    </a>
+
+  </div>
+</div>
+
+
+<!-- VENDOR MODAL -->
+<div id="vendorModal"
+     class="modal fixed inset-0 hidden z-50 items-center justify-center p-4">
+
+  <div class="glass rounded-2xl max-w-xl w-full p-6 relative">
+
+    <button onclick="closeModal('vendorModal')"
+            aria-label="Close business listing window"
+            class="absolute right-4 top-4 text-slate-400 hover:text-white">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <h2 class="text-xl font-black text-white">
+      Submit a Free Business Listing
+    </h2>
+
+    <p class="text-sm text-slate-400 mt-3">
+      Business listings are reviewed before publication. Submission does not
+      guarantee acceptance or constitute verification.
+    </p>
+
+    <div class="bg-[#061521] border border-slate-800 rounded-xl p-4 mt-5">
+
+      <div class="text-xs text-slate-300 leading-relaxed">
+        To minimize unnecessary collection of personal information, the
+        pre-launch version does not store information in your browser or
+        automatically publish user submissions.
+      </div>
+
+    </div>
+
+    <a href="mailto:admin@usppo.com?subject=Free%20USPPO%20Business%20Listing"
+       class="block text-center mt-5 bg-amber-400 hover:bg-amber-300 text-[#071827] font-bold py-3 rounded-lg text-sm">
+      Submit Listing by Email
+    </a>
+
+    <p class="text-[10px] text-slate-500 mt-4">
+      Please send only business contact information intended for public display.
+      Do not send passwords, financial information, Social Security numbers,
+      government identification numbers or other sensitive personal information.
+    </p>
+
+  </div>
+</div>
+
+
+<!-- TERMS -->
+<div id="termsModal"
+     class="modal fixed inset-0 hidden z-50 items-center justify-center p-4">
+
+  <div class="glass rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-y-auto p-7 relative legal-text">
+
+    <button onclick="closeModal('termsModal')"
+            aria-label="Close terms"
+            class="absolute right-4 top-4 text-slate-400 hover:text-white">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <h2 class="text-2xl font-black text-white mb-5">
+      Terms of Use
+    </h2>
+
+    <div class="text-xs text-slate-300 leading-relaxed">
+
+      <p><strong>Last updated:</strong> September 30, 2026.</p>
+
+      <p>
+        <strong>Informational purpose.</strong>
+        USPPO.com provides general maritime, logistics, weather, directory and
+        related information. Content is not professional, legal, customs,
+        transportation, navigation or safety advice.
+      </p>
+
+      <p>
+        <strong>Independent website.</strong>
+        USPPO.com is independently operated and is not affiliated with or
+        endorsed by the United Nations, UNECE, NOAA, National Weather Service,
+        U.S. Coast Guard, U.S. Customs and Border Protection, Maryland Port
+        Administration, Tradepoint Atlantic or any terminal operator unless
+        expressly stated.
+      </p>
+
+      <p>
+        <strong>No navigation.</strong>
+        Information available through USPPO.com must never be relied upon for
+        vessel navigation, piloting, docking, collision avoidance, emergency
+        response or safety-of-life decisions.
+      </p>
+
+      <p>
+        <strong>Third-party information.</strong>
+        Weather, tides, maps, vessel information and external resources may
+        originate from third parties. Information can be delayed, unavailable,
+        incomplete or inaccurate.
+      </p>
+
+      <p>
+        <strong>Business directory.</strong>
+        A business listing is not an endorsement, warranty or guarantee.
+        Users are responsible for independently investigating providers,
+        licensing, insurance, authority, qualifications, pricing and suitability.
+      </p>
+
+      <p>
+        <strong>Quotes and transactions.</strong>
+        USPPO.com does not become a party to a transportation, brokerage,
+        shipping, storage or other contract merely because parties discover
+        each other through this website.
+      </p>
+
+      <p>
+        <strong>No guarantee.</strong>
+        The website is provided on an "as available" basis. USPPO.com does not
+        guarantee uninterrupted availability, accuracy, completeness or
+        timeliness of information.
+      </p>
+
+      <p>
+        <strong>External websites.</strong>
+        Links to external websites are provided for convenience. USPPO.com does
+        not control those websites or their privacy, security, content,
+        availability or business practices.
+      </p>
+
+      <p>
+        <strong>Changes.</strong>
+        Information and these terms may be updated as the platform develops.
+      </p>
+
+      <p>
+        These terms are intended as general website terms and should be reviewed
+        by qualified legal counsel before USPPO.com begins facilitating
+        commercial transactions or collecting substantial user information.
+      </p>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- PRIVACY -->
+<div id="privacyModal"
+     class="modal fixed inset-0 hidden z-50 items-center justify-center p-4">
+
+  <div class="glass rounded-2xl max-w-3xl w-full max-h-[85vh] overflow-y-auto p-7 relative legal-text">
+
+    <button onclick="closeModal('privacyModal')"
+            aria-label="Close privacy policy"
+            class="absolute right-4 top-4 text-slate-400 hover:text-white">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <h2 class="text-2xl font-black text-white mb-5">
+      Privacy Policy
+    </h2>
+
+    <div class="text-xs text-slate-300 leading-relaxed">
+
+      <p><strong>Last updated:</strong> September 30, 2026.</p>
+
+      <p>
+        USPPO.com is designed to minimize unnecessary collection of personal
+        information.
+      </p>
+
+      <p>
+        When you voluntarily email USPPO.com, information you include in that
+        email may be received and retained for the purpose of responding to
+        your inquiry, evaluating a business listing or handling the request
+        you initiated.
+      </p>
+
+      <p>
+        Do not submit passwords, Social Security numbers, payment-card
+        information, government identification numbers or other unnecessary
+        sensitive information.
+      </p>
+
+      <p>
+        This website may rely on third-party hosting, content-delivery,
+        security or linked information services. Those providers may process
+        technical information according to their own policies.
+      </p>
+
+      <p>
+        If analytics, advertising, accounts, cookies beyond technically
+        necessary functions, or additional data-collection services are added,
+        this policy should be updated before those features are deployed.
+      </p>
+
+      <p>
+        Questions about information voluntarily submitted to USPPO.com may be
+        sent to admin@usppo.com.
+      </p>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- DATA SOURCES -->
+<div id="sourcesModal"
+     class="modal fixed inset-0 hidden z-50 items-center justify-center p-4">
+
+  <div class="glass rounded-2xl max-w-2xl w-full p-7 relative">
+
+    <button onclick="closeModal('sourcesModal')"
+            aria-label="Close data sources"
+            class="absolute right-4 top-4 text-slate-400 hover:text-white">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <h2 class="text-xl font-black text-white">
+      Data Sources & Attribution
+    </h2>
+
+    <div class="text-xs text-slate-300 leading-relaxed mt-5 space-y-4">
+
+      <p>
+        <strong>National Weather Service / NOAA:</strong>
+        Weather information may be retrieved from public U.S. Government
+        services. Data remains subject to the applicable agency notices,
+        limitations and disclaimers.
+      </p>
+
+      <p>
+        <strong>NOAA Tides & Currents:</strong>
+        Links are provided to NOAA water-level, tide and coastal observation
+        resources.
+      </p>
+
+      <p>
+        <strong>UN/LOCODE:</strong>
+        USPPO identifies Sparrows Point, Maryland in UN/LOCODE datasets.
+        USPPO.com is an independent domain and its use of that identifier does
+        not imply affiliation with the United Nations or UNECE.
+      </p>
+
+      <p>
+        <strong>Third parties:</strong>
+        Any future AIS, mapping or commercial data source should be clearly
+        identified and used only in accordance with the provider's applicable
+        terms and permissions.
+      </p>
+
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ACCESSIBILITY -->
+<div id="accessibilityModal"
+     class="modal fixed inset-0 hidden z-50 items-center justify-center p-4">
+
+  <div class="glass rounded-2xl max-w-2xl w-full p-7 relative">
+
+    <button onclick="closeModal('accessibilityModal')"
+            aria-label="Close accessibility statement"
+            class="absolute right-4 top-4 text-slate-400 hover:text-white">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+
+    <h2 class="text-xl font-black text-white">
+      Accessibility
+    </h2>
+
+    <p class="text-xs text-slate-300 leading-relaxed mt-5">
+      USPPO.com aims to provide an accessible experience, including readable
+      contrast, keyboard navigation, descriptive labels and responsive layouts.
+      If you encounter an accessibility problem, please contact
+      admin@usppo.com and identify the page or feature involved.
+    </p>
+
+  </div>
+</div>
+
+
+<!-- JAVASCRIPT -->
+<script>
+
+  const SPARROWS_POINT = {
+    lat: 39.216,
+    lon: -76.482
+  };
+
+
+  function openModal(id) {
+    const modal = document.getElementById(id);
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    document.body.style.overflow = "hidden";
+  }
+
+
+  function closeModal(id) {
+    const modal = document.getElementById(id);
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+    document.body.style.overflow = "";
+  }
+
+
+  document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+      document.querySelectorAll(".modal").forEach(modal => {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      });
+
+      document.body.style.overflow = "";
+    }
+  });
+
+
+  document.querySelectorAll(".modal").forEach(modal => {
+    modal.addEventListener("click", function(event) {
+      if (event.target === modal) {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+        document.body.style.overflow = "";
+      }
+    });
+  });
+
+
+  async function loadWeather() {
+
+    const status = document.getElementById("weatherStatus");
+
+    try {
+
+      const pointResponse = await fetch(
+        `https://api.weather.gov/points/${SPARROWS_POINT.lat},${SPARROWS_POINT.lon}`,
+        {
+          headers: {
+            "Accept": "application/geo+json"
+          }
         }
-    </script>
+      );
+
+      if (!pointResponse.ok) {
+        throw new Error("NWS location service unavailable");
+      }
+
+      const pointData = await pointResponse.json();
+
+      const forecastURL = pointData.properties.forecast;
+
+      const forecastResponse = await fetch(
+        forecastURL,
+        {
+          headers: {
+            "Accept": "application/geo+json"
+          }
+        }
+      );
+
+      if (!forecastResponse.ok) {
+        throw new Error("NWS forecast unavailable");
+      }
+
+      const forecastData = await forecastResponse.json();
+
+      const period = forecastData.properties.periods[0];
+
+      document.getElementById("temp").textContent =
+        `${period.temperature}°${period.temperatureUnit}`;
+
+      document.getElementById("wind").textContent =
+        `${period.windSpeed} ${period.windDirection}`;
+
+      document.getElementById("forecast").textContent =
+        period.shortForecast;
+
+      document.getElementById("updated").textContent =
+        new Date(forecastData.properties.updated).toLocaleTimeString(
+          [],
+          {
+            hour:"numeric",
+            minute:"2-digit"
+          }
+        );
+
+      document.getElementById("weatherSource").textContent =
+        "Source: NOAA / National Weather Service";
+
+      status.textContent = "NWS DATA";
+      status.className =
+        "text-[10px] bg-emerald-500/10 border border-emerald-500/30 rounded-full px-3 py-1 text-emerald-300";
+
+    }
+
+    catch(error) {
+
+      document.getElementById("temp").textContent = "Unavailable";
+      document.getElementById("wind").textContent = "Unavailable";
+      document.getElementById("forecast").textContent = "Check NWS";
+      document.getElementById("updated").textContent = "--";
+
+      document.getElementById("weatherSource").textContent =
+        "Official weather feed temporarily unavailable.";
+
+      status.textContent = "UNAVAILABLE";
+      status.className =
+        "text-[10px] bg-slate-800 border border-slate-700 rounded-full px-3 py-1 text-slate-400";
+
+    }
+  }
+
+
+  function convertUnit() {
+
+    const value = parseFloat(
+      document.getElementById("unitValue").value
+    );
+
+    const type =
+      document.getElementById("conversionType").value;
+
+    const result =
+      document.getElementById("conversionResult");
+
+    if (Number.isNaN(value)) {
+      result.textContent = "Please enter a number.";
+      return;
+    }
+
+    let answer = "";
+
+    switch(type) {
+
+      case "nmMiles":
+        answer = `${value} nautical miles = ${(value * 1.15078).toFixed(2)} miles`;
+        break;
+
+      case "milesNm":
+        answer = `${value} miles = ${(value / 1.15078).toFixed(2)} nautical miles`;
+        break;
+
+      case "kgLb":
+        answer = `${value} kg = ${(value * 2.20462).toFixed(2)} lb`;
+        break;
+
+      case "lbKg":
+        answer = `${value} lb = ${(value / 2.20462).toFixed(2)} kg`;
+        break;
+
+      case "cF":
+        answer = `${value}°C = ${((value * 9/5) + 32).toFixed(1)}°F`;
+        break;
+
+      case "fC":
+        answer = `${value}°F = ${((value - 32) * 5/9).toFixed(1)}°C`;
+        break;
+    }
+
+    result.textContent = answer;
+  }
+
+
+  loadWeather();
+
+</script>
+
 </body>
 </html>
